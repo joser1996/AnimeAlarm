@@ -18,6 +18,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return sa
     }()
     
+    let ac = AnimeInfoController()
     
     // MARK: Functions
     override func viewDidLoad() {
@@ -30,11 +31,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationController?.navigationBar.isHidden = true
         // DELETE: this
         collectionView.backgroundColor = .systemGroupedBackground
+        
         collectionView.contentInset = UIEdgeInsets(top: 250, left: 0, bottom: 0, right: 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 250, left: 0, bottom: 0, right: 0)
 
+        collectionView.delegate = self
         setUpSavedAnimeView()
     }
+    
     
     private func setUpSavedAnimeView() {
         view.addSubview(savedAnimView)
@@ -59,7 +63,8 @@ extension HomeController {
     //dequeue cells that will be used
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath)
-        cell.backgroundColor = .white
+        //cell.backgroundColor = .white
+        cell.backgroundColor = .secondarySystemGroupedBackground
         return cell
     }
 
@@ -69,8 +74,15 @@ extension HomeController {
 
     //get rid of extra spacing between cells
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
+        return 0
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let navigator = navigationController {
+            navigator.pushViewController(ac, animated: false)
+        }
+    }
+    
 }
 
 
