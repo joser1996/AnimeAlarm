@@ -14,6 +14,9 @@ struct Config {
     static let defaultConfig = Config(countLimit: 30, memoryLimit: 1024 * 1024 * 100) // 100 MB
 }
 
+//gloabal variable
+let imageCache = NSCache<AnyObject, AnyObject>()
+
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     // MARK: Properties
@@ -27,8 +30,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let animeInfoController = AnimeInfoController()
     //Any anime data is stored in this array, retrieved by getAnimFor() method in AnimeClient class
     var animeData: [MediaItem]?
-    
-    let imageCache = NSCache<AnyObject, AnyObject>()
     let config = Config.defaultConfig
     
     // MARK: Functions
@@ -105,8 +106,6 @@ extension HomeController {
                 let animeObj = animeData[indexPath.item]
                 //forwarding data
                 self.animeInfoController.animeData = animeObj
-                //forwarding reference to cache
-                self.animeInfoController.imageCache = self.imageCache
                 navigator.pushViewController(animeInfoController, animated: false)
             }
         }
