@@ -34,6 +34,7 @@ class AnimeInfoController: UIViewController {
     }
     
     var imageURLString: String?
+    var airingDates: [Int: Date]?
     
     //MARK: Methods
     override func viewDidLoad() {
@@ -59,6 +60,7 @@ class AnimeInfoController: UIViewController {
     
 }
 
+
 //rough estimate of how much memeory image uses in bytes
 extension UIImage {
     var diskSize: Int {
@@ -75,9 +77,7 @@ extension UIImageView {
     func loadImageUsing(urlString: String, completion: @escaping (UIImage) -> Void) {
         //check to see if image is cached
         if let img = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
-//            animeInfoView.thumbNail.image = img
             print("Using Cache")
-//            return
             completion(img)
             return
         }

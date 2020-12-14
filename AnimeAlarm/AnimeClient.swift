@@ -47,7 +47,7 @@ struct Title: Decodable {
 }
 
 struct NextAiring: Decodable {
-    let airingAt: Int
+    let airingAt: Double
     let episode: Int
 }
 
@@ -164,12 +164,16 @@ class AnimeScheduler {
                 //want to build an array of media items
                 let mediaArray = result.data.Page.media
                 var tempArr: [MediaItem] = []
+                var airingDates: [Int: Date] = [:]
                 for item in mediaArray {
                     tempArr.append(item)
+                    let airingDate = Alarm.airingDay(seconds: item.nextAiringEpisode?.airingAt ?? Double(0))
+                    airingDates[item.id] = airingDate
                 }
                 //saving array of anime objs
                 self.animeObjs = tempArr
                 vc.animeData = self.animeObjs
+                vc.airingDates = airingDates
                 DispatchQueue.main.async {
                     vc.collectionView.reloadData()
                 }

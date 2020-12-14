@@ -30,7 +30,10 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let animeInfoController = AnimeInfoController()
     //Any anime data is stored in this array, retrieved by getAnimFor() method in AnimeClient class
     var animeData: [MediaItem]?
+    var airingDates: [Int: Date]?
+    
     let config = Config.defaultConfig
+    
     
     // MARK: Functions
     override func viewDidLoad() {
@@ -84,8 +87,8 @@ extension HomeController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! RowCellView
         if let arr = animeData {
             cell.animeData = arr[indexPath.item]
-            
         }
+
         cell.backgroundColor = .secondarySystemGroupedBackground
         return cell
     }
@@ -106,6 +109,7 @@ extension HomeController {
                 let animeObj = animeData[indexPath.item]
                 //forwarding data
                 self.animeInfoController.animeData = animeObj
+                self.animeInfoController.airingDates = self.airingDates
                 navigator.pushViewController(animeInfoController, animated: false)
             }
         }
