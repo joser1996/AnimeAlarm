@@ -47,7 +47,7 @@ class AnimeInfoController: UIViewController {
     
     func loadImageUsing(urlString: String) {
         //check to see if image is cached
-        if let img = imageCache?.object(forKey: ImageKey(key: urlString)) as? UIImage {
+        if let img = imageCache?.object(forKey: urlString as AnyObject) as? UIImage {
             animeInfoView.thumbNail.image = img
             print("Using Cache")
             return
@@ -66,9 +66,8 @@ class AnimeInfoController: UIViewController {
             }
             
             DispatchQueue.main.async {
-                let imageToCache = UIImage(data: data)
-                let key = ImageKey(key: urlString)
-                self.imageCache?.setObject(imageToCache!, forKey: key)
+                guard let imageToCache = UIImage(data: data) else {return}
+                self.imageCache?.setObject(imageToCache, forKey: urlString as AnyObject, cost: imageToCache.diskSize)
                 self.animeInfoView.thumbNail.image = imageToCache
                 self.animeInfoView.thumbNail.contentMode = .scaleAspectFill
                 self.animeInfoView.thumbNail.clipsToBounds = true
@@ -79,10 +78,14 @@ class AnimeInfoController: UIViewController {
 }
 
 
-class ImageKey {
+//rough estimate of how much memeory image uses in bytes
+extension UIImage {
     
-    init(key: String) {
-        self.url = key
+    var diskSize: Int {
+        get {
+            guard let cgImage = cgImage else {return 0}
+            return cgImage.bytesPerRow * cgImage.height
+        }
     }
-    var url: String
+    
 }

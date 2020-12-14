@@ -7,6 +7,12 @@
 
 import UIKit
 
+struct Config {
+    let countLimit: Int
+    let memoryLimit: Int
+    
+    static let defaultConfig = Config(countLimit: 30, memoryLimit: 1024 * 1024 * 100) // 100 MB
+}
 
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
@@ -23,11 +29,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     var animeData: [MediaItem]?
     
     let imageCache = NSCache<AnyObject, AnyObject>()
-
+    let config = Config.defaultConfig
     
     // MARK: Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        imageCache.countLimit = config.countLimit
+        imageCache.totalCostLimit = config.memoryLimit
         
         //register the cell
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -89,12 +98,14 @@ extension HomeController {
         return 0
     }
     
+    //push infoViewController
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let navigator = navigationController {
             if let animeData = self.animeData {
                 let animeObj = animeData[indexPath.item]
                 //forwarding data
                 self.animeInfoController.animeData = animeObj
+                //forwarding reference to cache
                 self.animeInfoController.imageCache = self.imageCache
                 navigator.pushViewController(animeInfoController, animated: false)
             }
