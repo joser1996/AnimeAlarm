@@ -55,7 +55,7 @@ class AnimeInfoView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Remind Me!", for: .normal)
-        button.backgroundColor = .yellow
+        button.backgroundColor = .lightGray
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.titleLabel?.font = .systemFont(ofSize: 25)
         return button

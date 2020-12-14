@@ -18,9 +18,12 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return sa
     }()
     let animeClient = AnimeScheduler()
-    let ac = AnimeInfoController()
-    var rowCells: [MediaItem]?
+    let animeInfoController = AnimeInfoController()
+    //Any anime data is stored in this array, retrieved by getAnimFor() method in AnimeClient class
+    var animeData: [MediaItem]?
     
+    let imageCache = NSCache<AnyObject, AnyObject>()
+
     
     // MARK: Functions
     override func viewDidLoad() {
@@ -62,15 +65,17 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 extension HomeController {
     //number of cells in my collection view
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.rowCells?.count ?? 0
+        return self.animeData?.count ?? 0
     }
 
     //dequeue cells that will be used
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! RowCellView
         
-        if let arr = rowCells {
-            cell.rowCell = arr[indexPath.item]        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! RowCellView
+        if let arr = animeData {
+            cell.animeData = arr[indexPath.item]
+            
+        }
         cell.backgroundColor = .secondarySystemGroupedBackground
         return cell
     }
@@ -86,7 +91,13 @@ extension HomeController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let navigator = navigationController {
-            navigator.pushViewController(ac, animated: false)
+            if let animeData = self.animeData {
+                let animeObj = animeData[indexPath.item]
+                //forwarding data
+                self.animeInfoController.animeData = animeObj
+                self.animeInfoController.imageCache = self.imageCache
+                navigator.pushViewController(animeInfoController, animated: false)
+            }
         }
     }
     

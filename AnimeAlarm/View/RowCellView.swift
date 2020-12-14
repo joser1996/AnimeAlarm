@@ -29,9 +29,9 @@ class RowCellView: BaseCellView {
         return sv
     }()
     
-    var rowCell: MediaItem? {
+    var animeData: MediaItem? {
         didSet {
-            titleView.text = rowCell?.title.romaji
+            titleView.text = animeData?.title.romaji
         }
     }
     
@@ -57,10 +57,5 @@ class RowCellView: BaseCellView {
         ])
     }
     
-    override var isSelected: Bool {
-        didSet {
-            
-        }
-    }
 }
 

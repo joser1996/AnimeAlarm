@@ -33,6 +33,11 @@ struct MediaItem: Decodable {
     let id: Int
     let title: Title
     let nextAiringEpisode: NextAiring?
+    let episodes: Int?
+    let description: String?
+    let coverImage: CoverImage
+    let endDate: AnimeDate
+    let startDate: AnimeDate
 }
 
 struct Title: Decodable {
@@ -44,6 +49,18 @@ struct Title: Decodable {
 struct NextAiring: Decodable {
     let airingAt: Int
     let episode: Int
+}
+
+struct CoverImage: Decodable {
+    let extraLarge: String?
+    let large: String?
+    let medium: String?
+}
+
+struct AnimeDate: Decodable {
+    let year: Int?
+    let month: Int?
+    let day: Int?
 }
 
 struct AnimeRequest: Codable {
@@ -82,6 +99,23 @@ class AnimeScheduler {
                         airingAt
                         episode
                     }
+                    episodes
+                    description(asHtml: false)
+                    coverImage {
+                        extraLarge
+                        large
+                        medium
+                    }
+                    endDate {
+                        year
+                        month
+                        day
+                    }
+                    startDate {
+                        year
+                        month
+                        day
+                    }
                 }
             }
         }
@@ -103,6 +137,7 @@ class AnimeScheduler {
     
     //sends request and gets data
     func getAnimeFor(season: String, vc: HomeController) {
+        print("Using Data!!!")
         guard let data = toJSON() else {
             print("Couldn't convert request to JSON")
             return
@@ -134,7 +169,7 @@ class AnimeScheduler {
                 }
                 //saving array of anime objs
                 self.animeObjs = tempArr
-                vc.rowCells = self.animeObjs
+                vc.animeData = self.animeObjs
                 DispatchQueue.main.async {
                     vc.collectionView.reloadData()
                 }
