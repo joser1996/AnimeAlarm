@@ -17,8 +17,10 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         sa.translatesAutoresizingMaskIntoConstraints = false
         return sa
     }()
-    
+    let animeClient = AnimeScheduler()
     let ac = AnimeInfoController()
+    var rowCells: [MediaItem]?
+    
     
     // MARK: Functions
     override func viewDidLoad() {
@@ -37,6 +39,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
         collectionView.delegate = self
         setUpSavedAnimeView()
+        
+        //Fetch the data
+        animeClient.getAnimeFor(season: "WINTER", vc: self)
     }
     
     
@@ -57,13 +62,15 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 extension HomeController {
     //number of cells in my collection view
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 40
+        return self.rowCells?.count ?? 0
     }
 
     //dequeue cells that will be used
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath)
-        //cell.backgroundColor = .white
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! RowCellView
+        
+        if let arr = rowCells {
+            cell.rowCell = arr[indexPath.item]        }
         cell.backgroundColor = .secondarySystemGroupedBackground
         return cell
     }

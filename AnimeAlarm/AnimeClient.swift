@@ -51,8 +51,14 @@ struct AnimeRequest: Codable {
     var variables: [String: Int]
 }
 
+
+
+
+
 class AnimeScheduler {
-    var responseItem: ResponseFormat? = nil
+    
+    //MARK: Properties
+    var responseItem: ResponseFormat?
     let baseURL: String = "https://graphql.anilist.co"
     let query = """
         query($page: Int, $perPage: Int) {
@@ -82,7 +88,11 @@ class AnimeScheduler {
     """
     
     let variables = ["page": 1, "perPage": 100]
-
+    var animeObjs: [MediaItem]?
+    
+    
+    //MARK: Methods
+    //returns JSON object that will be request
     func toJSON() -> Data? {
         let animeReq = AnimeRequest(query: self.query, variables: self.variables)
         let encoder = JSONEncoder()
@@ -91,18 +101,18 @@ class AnimeScheduler {
         return data
     }
     
-    func getAnimeFor(season: String) -> ResponseFormat? {
+    //sends request and gets data
+    func getAnimeFor(season: String, vc: HomeController) {
         guard let data = toJSON() else {
             print("Couldn't convert request to JSON")
-            return nil
+            return
         }
-        let url = URL(string: self.baseURL)!
-        var request = URLRequest(url: url)
+        
+        var request = URLRequest(url: URL(string: self.baseURL)!)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        var done = false
-        let task = URLSession.shared.uploadTask(with: request, from: data) { data, respone, error in
-            print("Task: ")
+        
+        URLSession.shared.uploadTask(with: request, from: data) { data, respone, error in
             if let error = error {
                 print("error: \(error)")
                 return
@@ -116,18 +126,22 @@ class AnimeScheduler {
             do {
                 let result = try JSONDecoder().decode(ResponseFormat.self, from: data)
                 self.responseItem = result
-                //print("Media List: \n", result.data.Page.media)
-                done = true
+                //want to build an array of media items
+                let mediaArray = result.data.Page.media
+                var tempArr: [MediaItem] = []
+                for item in mediaArray {
+                    tempArr.append(item)
+                }
+                //saving array of anime objs
+                self.animeObjs = tempArr
+                vc.rowCells = self.animeObjs
+                DispatchQueue.main.async {
+                    vc.collectionView.reloadData()
+                }
             } catch {
                 print("JSON Error: \(error.localizedDescription)")
-                done = true
             }
-        }
-        task.resume()
-        repeat {
-            print("Waiting")
-        } while !done
-        return self.responseItem
+        }.resume()
     }
     
 }

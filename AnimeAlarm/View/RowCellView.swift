@@ -29,6 +29,11 @@ class RowCellView: BaseCellView {
         return sv
     }()
     
+    var rowCell: MediaItem? {
+        didSet {
+            titleView.text = rowCell?.title.romaji
+        }
+    }
     
     //MARK: Methods
     override func setUpViews() {
