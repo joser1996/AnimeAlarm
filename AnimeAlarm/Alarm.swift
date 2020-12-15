@@ -25,11 +25,12 @@ class Alarm {
     //init(for date: DateObj)
     //MARK: Properties
     var alertDate: Date
-    
+    var label: String
     
     //MARK: Initializer
-    init(for date: Date) {
+    init(for date: Date, for label: String) {
         self.alertDate = date
+        self.label = label
     }
     
     //MARK: Methods

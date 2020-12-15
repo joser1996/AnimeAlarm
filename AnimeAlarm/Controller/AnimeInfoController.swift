@@ -35,6 +35,7 @@ class AnimeInfoController: UIViewController {
     
     var imageURLString: String?
     var airingDates: [Int: Date]?
+    var alarms: [Int: Date] = [:]
     
     //MARK: Methods
     override func viewDidLoad() {
@@ -42,6 +43,7 @@ class AnimeInfoController: UIViewController {
         navigationController?.navigationBar.isHidden = false
         // Do any additional setup after loading the view.
         setUpAnimeInfoView()
+        configureButton()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -56,6 +58,24 @@ class AnimeInfoController: UIViewController {
             animeInfoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             animeInfoView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+    
+    private func configureButton() {
+        animeInfoView.saveButton.addTarget(self, action: #selector(remindMeButtonAction), for: .touchUpInside)
+    }
+    
+    @objc private func remindMeButtonAction() {
+        print("Remind Me Was Pressed!!!!")
+        guard let animeId = self.animeData?.id else {
+            print("Wasn't able to get anime ID")
+            return
+        }
+        guard let airingDates = self.airingDates else {
+            print("Unable to get airing dates")
+            return
+        }
+        let airingDate = airingDates[animeId]
+        print("Setting Alarm for: \(airingDate)")
     }
     
 }

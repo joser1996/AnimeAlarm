@@ -7,17 +7,55 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    //ask user for permission to use push notifications
+    func registerForPushNotifications() {
+        UNUserNotificationCenter.current()
+            .requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, _ in
+                print("Permission Granted \(granted)")
+                guard granted else {return}
+                self?.getNotificationSettings()
+            }
+    }
 
-
+    func getNotificationSettings(){
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            print("Notification Settings: \(settings)")
+            guard settings.authorizationStatus == .authorized else {return}
+            DispatchQueue.main.async {
+                //Now that we have permission we attempt to register
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        }
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data)}
+        let token = tokenParts.joined()
+        print("Device Token: \(token)")
+        //consider saving this token on server for future calls
+    }
+    
+    //Notification is passed here if app wasn't running
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        registerForPushNotifications()
         return true
     }
 
+    //called when app was running in foreground or background
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        <#code#>
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to Register: \(error)")
+    }
+    
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
