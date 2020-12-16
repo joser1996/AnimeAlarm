@@ -9,12 +9,17 @@ import UIKit
 class AnimeInfoController: UIViewController {
 
     //MARK: Properties
-    lazy var animeInfoView: AnimeInfoView = {
-        let ai = AnimeInfoView()
-        ai.translatesAutoresizingMaskIntoConstraints = false
-        return ai
-    }()
+    let scrollView = UIScrollView()
+    //functioning as content view
+//    lazy var animeInfoView: AnimeInfoView = {
+//        let ai = AnimeInfoView()
+//        ai.backgroundColor = .yellow
+//        ai.translatesAutoresizingMaskIntoConstraints = false
+//        return ai
+//    }()
         
+    let animeInfoView = AnimeInfoView()
+    
     var animeData: MediaItem? {
         didSet {
             animeInfoView.titleView.text = animeData?.title.romaji
@@ -42,12 +47,52 @@ class AnimeInfoController: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = false
         // Do any additional setup after loading the view.
-        setUpAnimeInfoView()
-        configureButton()
+        setUpScrollView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         animeInfoView.thumbNail.image = nil
+    }
+    
+    private func setUpScrollView() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        animeInfoView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(scrollView)
+        scrollView.addSubview(animeInfoView)
+        //scrollView.backgroundColor = .red
+        scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+//        NSLayoutConstraint.activate([
+//            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+//            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+//        ])
+//
+//        NSLayoutConstraint.activate([
+//            animeInfoView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+//            animeInfoView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+//            animeInfoView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+//            animeInfoView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+//        ])
+        animeInfoView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        animeInfoView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        animeInfoView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        animeInfoView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        DispatchQueue.main.async {
+            var sum = CGFloat(0)
+            for subV in self.animeInfoView.subviews {
+                sum += subV.frame.height
+            }
+            self.scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: sum + 100)
+        }
     }
     
     private func setUpAnimeInfoView() {
@@ -60,9 +105,7 @@ class AnimeInfoController: UIViewController {
         ])
     }
     
-    private func configureButton() {
-        animeInfoView.saveButton.addTarget(self, action: #selector(remindMeButtonAction), for: .touchUpInside)
-    }
+    
     
     @objc private func remindMeButtonAction() {
         print("Remind Me Was Pressed!!!!")
@@ -75,7 +118,6 @@ class AnimeInfoController: UIViewController {
             return
         }
         let airingDate = airingDates[animeId]
-        print("Setting Alarm for: \(airingDate)")
     }
     
 }

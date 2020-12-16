@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     //called when app was running in foreground or background
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        <#code#>
+        print("Here")
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

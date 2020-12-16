@@ -45,30 +45,19 @@ class AnimeInfoView: UIView {
         syn.font = .systemFont(ofSize: 25)
         syn.translatesAutoresizingMaskIntoConstraints = false
         syn.isSelectable = false
+        syn.isScrollEnabled = false
         //DELETE
         //syn.backgroundColor = .cyan
 
         return syn
     }()
-    
-    lazy var saveButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Remind Me!", for: .normal)
-        button.backgroundColor = .lightGray
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.titleLabel?.font = .systemFont(ofSize: 25)
-        return button
-    }()
-    
+        
     //MARK: Methods
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(titleView)
         addSubview(thumbNail)
         addSubview(synopsis)
-        addSubview(saveButton)
-
         
         //MARK: Constraints
         NSLayoutConstraint.activate([
@@ -88,17 +77,9 @@ class AnimeInfoView: UIView {
         NSLayoutConstraint.activate([
             synopsis.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             synopsis.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            synopsis.topAnchor.constraint(equalTo: thumbNail.bottomAnchor, constant: 16),
-            synopsis.heightAnchor.constraint(equalToConstant: 300)
+            synopsis.topAnchor.constraint(equalTo: thumbNail.bottomAnchor, constant: 16)
         ])
-        
-        NSLayoutConstraint.activate([
-            saveButton.topAnchor.constraint(equalTo: synopsis.bottomAnchor, constant: 40),
-            saveButton.widthAnchor.constraint(equalToConstant: 200),
-            saveButton.heightAnchor.constraint(equalToConstant: 50),
-            saveButton.centerXAnchor.constraint(equalTo: synopsis.centerXAnchor)
-        ])
-        
+                
     }
     
     
