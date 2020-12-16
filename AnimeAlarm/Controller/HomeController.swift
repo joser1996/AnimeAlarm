@@ -17,7 +17,7 @@ struct Config {
 //gloabal variable
 let imageCache = NSCache<AnyObject, AnyObject>()
 
-class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class HomeController: UICollectionViewController {
     
     // MARK: Properties
     let cellId = "cellId"
@@ -54,7 +54,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 //        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 250, left: 0, bottom: 0, right: 0)
 
         collectionView.delegate = self
-        //setUpSavedAnimeView()
         
         //Fetch the data
         animeClient.getAnimeFor(season: "WINTER", vc: self)
@@ -64,7 +63,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
 
 
-extension HomeController {
+//MARK: Delegate Funcitons
+extension HomeController: UICollectionViewDelegateFlowLayout {
     //number of cells in my collection view
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.animeData?.count ?? 0

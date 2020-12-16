@@ -11,30 +11,36 @@ class AnimeInfoController: UIViewController {
     //MARK: Properties
     let scrollView = UIScrollView()
     //functioning as content view
-//    lazy var animeInfoView: AnimeInfoView = {
-//        let ai = AnimeInfoView()
-//        ai.backgroundColor = .yellow
-//        ai.translatesAutoresizingMaskIntoConstraints = false
-//        return ai
-//    }()
-        
     let animeInfoView = AnimeInfoView()
     
     var animeData: MediaItem? {
         didSet {
-            animeInfoView.titleView.text = animeData?.title.romaji
-            if let desc = animeData?.description, let imageURL = animeData?.coverImage.extraLarge {
-                animeInfoView.synopsis.text = desc
-                
-                animeInfoView.thumbNail.loadImageUsing(urlString: imageURL) { image in
-                    if imageURL == self.animeData?.coverImage.extraLarge {
-                        self.animeInfoView.thumbNail.image = image
-                    }
+            let title: String = animeData?.title.romaji ?? "No Title"
+            let imageURL: String? = animeData?.coverImage.extraLarge
+            let syn: String? = animeData?.description ?? nil
+            
+            //set title
+            animeInfoView.titleView.text = title
+            
+            //set image
+            if let imageUrl = imageURL {
+                animeInfoView.thumbNail.loadImageUsing(urlString: imageUrl) { image in
+                    self.animeInfoView.thumbNail.image = image
                 }
             } else {
-                animeInfoView.synopsis.text = ""
-                animeInfoView.thumbNail.image = nil
+                //place generic image here for when not found
+                self.animeInfoView.thumbNail.image = nil
             }
+            
+            //set synopsis
+            if let synopsis = syn {
+                //clean up text
+                let clean = synopsis.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+                animeInfoView.synopsis.text = clean
+            } else {
+                animeInfoView.synopsis.text = "No Snyopis Provided."
+            }
+
         }
     }
     
@@ -65,19 +71,7 @@ class AnimeInfoController: UIViewController {
         scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-//        NSLayoutConstraint.activate([
-//            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-//            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-//        ])
-//
-//        NSLayoutConstraint.activate([
-//            animeInfoView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-//            animeInfoView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-//            animeInfoView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-//            animeInfoView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
-//        ])
+
         animeInfoView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         animeInfoView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         animeInfoView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
@@ -117,7 +111,7 @@ class AnimeInfoController: UIViewController {
             print("Unable to get airing dates")
             return
         }
-        let airingDate = airingDates[animeId]
+        _ = airingDates[animeId] //let airing date
     }
     
 }
