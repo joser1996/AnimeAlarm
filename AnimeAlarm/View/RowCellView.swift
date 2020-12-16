@@ -10,6 +10,7 @@ import UIKit
 class RowCellView: BaseCellView {
     
     //MARK: Properties
+    
     lazy var titleView: UILabel = {
         let tv = UILabel(frame: .zero)
         //DELETE

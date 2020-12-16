@@ -19,6 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //creating navigation controller and setting HomeController(:UICollectionViewController) as nav's root controller
         let collectionViewLayout = UICollectionViewFlowLayout()
         let nav = UINavigationController(rootViewController: HomeController(collectionViewLayout: collectionViewLayout))
+        nav.navigationBar.prefersLargeTitles = true
         window.rootViewController = nav
         window.makeKeyAndVisible()
         

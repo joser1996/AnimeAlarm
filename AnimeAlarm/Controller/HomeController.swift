@@ -21,11 +21,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     // MARK: Properties
     let cellId = "cellId"
-    lazy var savedAnimView: SavedAnimeView = {
-        let sa = SavedAnimeView()
-        sa.translatesAutoresizingMaskIntoConstraints = false
-        return sa
-    }()
+    let cellId1 = "cellId1"
+    
     let animeClient = AnimeScheduler()
     let animeInfoController = AnimeInfoController()
     //Any anime data is stored in this array, retrieved by getAnimFor() method in AnimeClient class
@@ -45,30 +42,22 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         //register the cell
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(RowCellView.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(SavedCellView.self, forCellWithReuseIdentifier: cellId1)
         //turn off navbar
-        navigationController?.navigationBar.isHidden = true
+        //navigationController?.navigationBar.isHidden = true
+        navigationItem.title = "Winter 2021"
+        navigationController?.navigationBar.isTranslucent = false
         // DELETE: this
         collectionView.backgroundColor = .systemGroupedBackground
         
-        collectionView.contentInset = UIEdgeInsets(top: 250, left: 0, bottom: 0, right: 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 250, left: 0, bottom: 0, right: 0)
+//        collectionView.contentInset = UIEdgeInsets(top: 250, left: 0, bottom: 0, right: 0)
+//        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 250, left: 0, bottom: 0, right: 0)
 
         collectionView.delegate = self
-        setUpSavedAnimeView()
+        //setUpSavedAnimeView()
         
         //Fetch the data
         animeClient.getAnimeFor(season: "WINTER", vc: self)
-    }
-    
-    
-    private func setUpSavedAnimeView() {
-        view.addSubview(savedAnimView)
-        NSLayoutConstraint.activate([
-            savedAnimView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            savedAnimView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            savedAnimView.topAnchor.constraint(equalTo: view.topAnchor),
-            savedAnimView.heightAnchor.constraint(equalToConstant: 300)
-        ])
     }
 
 }
@@ -84,16 +73,24 @@ extension HomeController {
     //dequeue cells that will be used
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        if(indexPath.item == 0) {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId1, for: indexPath)
+            return cell
+        }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! RowCellView
         if let arr = animeData {
-            cell.animeData = arr[indexPath.item]
+            cell.animeData = arr[indexPath.item - 1]
         }
 
         cell.backgroundColor = .secondarySystemGroupedBackground
         return cell
     }
 
+    //cell size
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if(indexPath.item == 0){
+            return CGSize(width: view.frame.width, height: 300)
+        }
         return CGSize(width: view.frame.width, height: 40)
     }
 
@@ -106,7 +103,7 @@ extension HomeController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let navigator = navigationController {
             if let animeData = self.animeData {
-                let animeObj = animeData[indexPath.item]
+                let animeObj = animeData[indexPath.item-1]
                 //forwarding data
                 self.animeInfoController.animeData = animeObj
                 self.animeInfoController.airingDates = self.airingDates
