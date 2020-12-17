@@ -11,7 +11,7 @@ struct Config {
     let countLimit: Int
     let memoryLimit: Int
     
-    static let defaultConfig = Config(countLimit: 30, memoryLimit: 1024 * 1024 * 100) // 100 MB
+    static let defaultConfig = Config(countLimit: 50, memoryLimit: 1024 * 1024 * 100) // 100 MB
 }
 
 //gloabal variable
@@ -91,7 +91,7 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
         if(indexPath.item == 0){
             return CGSize(width: view.frame.width, height: 300)
         }
-        return CGSize(width: view.frame.width, height: 40)
+        return CGSize(width: view.frame.width, height: 192)
     }
 
     //get rid of extra spacing between cells

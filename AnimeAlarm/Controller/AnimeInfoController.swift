@@ -16,7 +16,7 @@ class AnimeInfoController: UIViewController {
     var animeData: MediaItem? {
         didSet {
             let title: String = animeData?.title.romaji ?? "No Title"
-            let imageURL: String? = animeData?.coverImage.extraLarge
+            let imageURL: String? = animeData?.coverImage.large
             let syn: String? = animeData?.description ?? nil
             
             //set title
