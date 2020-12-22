@@ -16,6 +16,7 @@
 		624300492580710400DC6090 /* AnimeAlarmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624300482580710400DC6090 /* AnimeAlarmTests.swift */; };
 		624300542580710400DC6090 /* AnimeAlarmUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624300532580710400DC6090 /* AnimeAlarmUITests.swift */; };
 		6285D743258A992F003371AF /* SavedCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6285D742258A992F003371AF /* SavedCellView.swift */; };
+		6285D74B258C1D30003371AF /* AlarmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6285D74A258C1D30003371AF /* AlarmManager.swift */; };
 		62BAF48425844E44003F7B2C /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BAF48325844E44003F7B2C /* HomeController.swift */; };
 		62BAF48D2584558A003F7B2C /* RowCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BAF48C2584558A003F7B2C /* RowCellView.swift */; };
 		62BAF495258455B0003F7B2C /* BaseCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BAF494258455B0003F7B2C /* BaseCellView.swift */; };
@@ -60,6 +61,7 @@
 		624300532580710400DC6090 /* AnimeAlarmUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeAlarmUITests.swift; sourceTree = "<group>"; };
 		624300552580710400DC6090 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6285D742258A992F003371AF /* SavedCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedCellView.swift; sourceTree = "<group>"; };
+		6285D74A258C1D30003371AF /* AlarmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmManager.swift; sourceTree = "<group>"; };
 		62BAF48325844E44003F7B2C /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		62BAF48C2584558A003F7B2C /* RowCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowCellView.swift; sourceTree = "<group>"; };
 		62BAF494258455B0003F7B2C /* BaseCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellView.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				62BAF48225844E2D003F7B2C /* Controller */,
 				6243002E258070FF00DC6090 /* AppDelegate.swift */,
 				62430030258070FF00DC6090 /* SceneDelegate.swift */,
+				6285D74A258C1D30003371AF /* AlarmManager.swift */,
 				6200641B25817B0900806673 /* AnimeClient.swift */,
 				6200643C2581E11300806673 /* LaunchScreen.storyboard */,
 				6243003A2580710300DC6090 /* Assets.xcassets */,
@@ -327,6 +330,7 @@
 				62FBEAA325859A1F00BBFCE2 /* AnimeInfoController.swift in Sources */,
 				6285D743258A992F003371AF /* SavedCellView.swift in Sources */,
 				62BAF49A25845E00003F7B2C /* SavedAnimeView.swift in Sources */,
+				6285D74B258C1D30003371AF /* AlarmManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -28,7 +28,7 @@ class Alarm {
     var label: String
     
     //MARK: Initializer
-    init(for date: Date, for label: String) {
+    init(on date: Date, for label: String) {
         self.alertDate = date
         self.label = label
     }
