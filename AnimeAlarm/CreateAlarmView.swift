@@ -86,7 +86,7 @@ class CreateAlarmView: UIView {
             textField.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 16),
             textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            textField.heightAnchor.constraint(equalToConstant: 30)
+            textField.heightAnchor.constraint(equalToConstant: 50)
         ])
         //saveButton
         NSLayoutConstraint.activate([
