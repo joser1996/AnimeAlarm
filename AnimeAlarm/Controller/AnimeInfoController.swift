@@ -12,7 +12,7 @@ class AnimeInfoController: UIViewController {
     let scrollView = UIScrollView()
     //functioning as content view
     let animeInfoView = AnimeInfoView()
-    
+        
     var animeData: MediaItem? {
         didSet {
             let title: String = animeData?.title.romaji ?? "No Title"
@@ -51,9 +51,15 @@ class AnimeInfoController: UIViewController {
     //MARK: Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.isHidden = false
         // Do any additional setup after loading the view.
+        navigationController?.navigationBar.isHidden = false
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addAction))
         setUpScrollView()
+    }
+    
+    @objc private func addAction() {
+        let popVC = PopupController()
+        self.present(popVC, animated: true, completion: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

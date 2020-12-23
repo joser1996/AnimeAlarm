@@ -21,6 +21,8 @@
 		62BAF48D2584558A003F7B2C /* RowCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BAF48C2584558A003F7B2C /* RowCellView.swift */; };
 		62BAF495258455B0003F7B2C /* BaseCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BAF494258455B0003F7B2C /* BaseCellView.swift */; };
 		62BAF49A25845E00003F7B2C /* SavedAnimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BAF49925845E00003F7B2C /* SavedAnimeView.swift */; };
+		62C21CE32592B9350018609B /* CreateAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C21CE22592B9350018609B /* CreateAlarmView.swift */; };
+		62C21CE82592BD640018609B /* PopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C21CE72592BD640018609B /* PopupController.swift */; };
 		62F04C522587F68F0057D4CA /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F04C512587F68F0057D4CA /* Alarm.swift */; };
 		62FBEA9E258549B100BBFCE2 /* SavedAnimeCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FBEA9D258549B100BBFCE2 /* SavedAnimeCellView.swift */; };
 		62FBEAA325859A1F00BBFCE2 /* AnimeInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FBEAA225859A1F00BBFCE2 /* AnimeInfoController.swift */; };
@@ -66,6 +68,8 @@
 		62BAF48C2584558A003F7B2C /* RowCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowCellView.swift; sourceTree = "<group>"; };
 		62BAF494258455B0003F7B2C /* BaseCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellView.swift; sourceTree = "<group>"; };
 		62BAF49925845E00003F7B2C /* SavedAnimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedAnimeView.swift; sourceTree = "<group>"; };
+		62C21CE22592B9350018609B /* CreateAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreateAlarmView.swift; path = AnimeAlarm/CreateAlarmView.swift; sourceTree = SOURCE_ROOT; };
+		62C21CE72592BD640018609B /* PopupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PopupController.swift; path = AnimeAlarm/PopupController.swift; sourceTree = SOURCE_ROOT; };
 		62F04C512587F68F0057D4CA /* Alarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
 		62F04C562588193C0057D4CA /* AnimeAlarm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AnimeAlarm.entitlements; sourceTree = "<group>"; };
 		62FBEA9D258549B100BBFCE2 /* SavedAnimeCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedAnimeCellView.swift; sourceTree = "<group>"; };
@@ -124,6 +128,7 @@
 			children = (
 				62F04C562588193C0057D4CA /* AnimeAlarm.entitlements */,
 				62F04C512587F68F0057D4CA /* Alarm.swift */,
+				62C21CED2592C0C30018609B /* Helpers */,
 				62FBEAB12586DDB600BBFCE2 /* Model */,
 				62BAF48B2584557A003F7B2C /* View */,
 				62BAF48225844E2D003F7B2C /* Controller */,
@@ -160,6 +165,7 @@
 		62BAF48225844E2D003F7B2C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				62C21CE72592BD640018609B /* PopupController.swift */,
 				62BAF48325844E44003F7B2C /* HomeController.swift */,
 				62FBEAA225859A1F00BBFCE2 /* AnimeInfoController.swift */,
 			);
@@ -169,6 +175,7 @@
 		62BAF48B2584557A003F7B2C /* View */ = {
 			isa = PBXGroup;
 			children = (
+				62C21CE22592B9350018609B /* CreateAlarmView.swift */,
 				62BAF48C2584558A003F7B2C /* RowCellView.swift */,
 				6285D742258A992F003371AF /* SavedCellView.swift */,
 				62BAF494258455B0003F7B2C /* BaseCellView.swift */,
@@ -177,6 +184,13 @@
 				62FBEAA725859B1800BBFCE2 /* AnimeInfoView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		62C21CED2592C0C30018609B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		62FBEAB12586DDB600BBFCE2 /* Model */ = {
@@ -316,6 +330,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62C21CE82592BD640018609B /* PopupController.swift in Sources */,
 				6243002F258070FF00DC6090 /* AppDelegate.swift in Sources */,
 				62FBEAA825859B1800BBFCE2 /* AnimeInfoView.swift in Sources */,
 				62430039258070FF00DC6090 /* AnimeAlarm.xcdatamodeld in Sources */,
@@ -328,6 +343,7 @@
 				62BAF48425844E44003F7B2C /* HomeController.swift in Sources */,
 				62BAF48D2584558A003F7B2C /* RowCellView.swift in Sources */,
 				62FBEAA325859A1F00BBFCE2 /* AnimeInfoController.swift in Sources */,
+				62C21CE32592B9350018609B /* CreateAlarmView.swift in Sources */,
 				6285D743258A992F003371AF /* SavedCellView.swift in Sources */,
 				62BAF49A25845E00003F7B2C /* SavedAnimeView.swift in Sources */,
 				6285D74B258C1D30003371AF /* AlarmManager.swift in Sources */,
