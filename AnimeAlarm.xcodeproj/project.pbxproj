@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,6 +15,8 @@
 		6243003B2580710300DC6090 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6243003A2580710300DC6090 /* Assets.xcassets */; };
 		624300492580710400DC6090 /* AnimeAlarmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624300482580710400DC6090 /* AnimeAlarmTests.swift */; };
 		624300542580710400DC6090 /* AnimeAlarmUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624300532580710400DC6090 /* AnimeAlarmUITests.swift */; };
+		626D2D25259BB01D00CF7616 /* DBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626D2D24259BB01D00CF7616 /* DBClient.swift */; };
+		626D2D2B259BB16400CF7616 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 626D2D2A259BB16400CF7616 /* GRDB */; };
 		6285D743258A992F003371AF /* SavedCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6285D742258A992F003371AF /* SavedCellView.swift */; };
 		6285D74B258C1D30003371AF /* AlarmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6285D74A258C1D30003371AF /* AlarmManager.swift */; };
 		62BAF48425844E44003F7B2C /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BAF48325844E44003F7B2C /* HomeController.swift */; };
@@ -62,6 +64,7 @@
 		6243004F2580710400DC6090 /* AnimeAlarmUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnimeAlarmUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		624300532580710400DC6090 /* AnimeAlarmUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeAlarmUITests.swift; sourceTree = "<group>"; };
 		624300552580710400DC6090 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		626D2D24259BB01D00CF7616 /* DBClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBClient.swift; sourceTree = "<group>"; };
 		6285D742258A992F003371AF /* SavedCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedCellView.swift; sourceTree = "<group>"; };
 		6285D74A258C1D30003371AF /* AlarmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmManager.swift; sourceTree = "<group>"; };
 		62BAF48325844E44003F7B2C /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -83,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				626D2D2B259BB16400CF7616 /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +110,7 @@
 		62430022258070FF00DC6090 = {
 			isa = PBXGroup;
 			children = (
+				626D2D24259BB01D00CF7616 /* DBClient.swift */,
 				6243002D258070FF00DC6090 /* AnimeAlarm */,
 				624300472580710400DC6090 /* AnimeAlarmTests */,
 				624300522580710400DC6090 /* AnimeAlarmUITests */,
@@ -217,6 +222,9 @@
 			dependencies = (
 			);
 			name = AnimeAlarm;
+			packageProductDependencies = (
+				626D2D2A259BB16400CF7616 /* GRDB */,
+			);
 			productName = AnimeAlarm;
 			productReference = 6243002B258070FF00DC6090 /* AnimeAlarm.app */;
 			productType = "com.apple.product-type.application";
@@ -288,6 +296,9 @@
 				Base,
 			);
 			mainGroup = 62430022258070FF00DC6090;
+			packageReferences = (
+				626D2D29259BB16400CF7616 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+			);
 			productRefGroup = 6243002C258070FF00DC6090 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -346,6 +357,7 @@
 				62C21CE32592B9350018609B /* CreateAlarmView.swift in Sources */,
 				6285D743258A992F003371AF /* SavedCellView.swift in Sources */,
 				62BAF49A25845E00003F7B2C /* SavedAnimeView.swift in Sources */,
+				626D2D25259BB01D00CF7616 /* DBClient.swift in Sources */,
 				6285D74B258C1D30003371AF /* AlarmManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -662,6 +674,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		626D2D29259BB16400CF7616 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		626D2D2A259BB16400CF7616 /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 626D2D29259BB16400CF7616 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		62430037258070FF00DC6090 /* AnimeAlarm.xcdatamodeld */ = {

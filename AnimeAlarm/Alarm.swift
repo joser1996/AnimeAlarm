@@ -26,11 +26,15 @@ class Alarm {
     //MARK: Properties
     var alertDate: Date
     var label: String
+    var animeID: Int
+    var active: Bool
     
     //MARK: Initializer
-    init(on date: Date, for label: String) {
+    init(on date: Date, for label: String, with id: Int, isActive: Bool) {
         self.alertDate = date
         self.label = label
+        self.animeID = id
+        self.active = isActive
     }
     
     //MARK: Methods

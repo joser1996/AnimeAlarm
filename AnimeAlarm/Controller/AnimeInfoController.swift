@@ -59,6 +59,8 @@ class AnimeInfoController: UIViewController {
     
     @objc private func addAction() {
         let popVC = PopupController()
+        //pass necessary data
+        popVC.animeData = self.animeData
         self.present(popVC, animated: true, completion: nil)
     }
     

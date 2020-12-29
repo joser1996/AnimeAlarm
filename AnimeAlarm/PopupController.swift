@@ -9,8 +9,12 @@ import UIKit
 
 class PopupController: UIViewController {
     
+    //MARK: Properties
     private let popupView = CreateAlarmView()
+    var selectedDate: Date?
+    var animeData: MediaItem?
     
+    //MARK: Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpPopUpView()
@@ -34,6 +38,7 @@ class PopupController: UIViewController {
         ])
         
     }
+    //set the selected date
     @objc private func doneAction() {
         if let datePicker = self.popupView.textField.inputView as? UIDatePicker {
             let dateFormatter = DateFormatter()
@@ -41,12 +46,25 @@ class PopupController: UIViewController {
             dateFormatter.timeStyle = .short
             //print("Date: \(dateFormatter.string(from: datePicker.date))")
             self.popupView.textField.text = dateFormatter.string(from: datePicker.date)
+            self.selectedDate = datePicker.date
         }
         self.popupView.textField.resignFirstResponder()
     }
     
     @objc private func saveAction() {
         print("Save action!")
+        //create alarm object
+        guard let animeData = self.animeData else {
+            print("No Data Passed")
+            return
+        }
+        guard let label = animeData.title.romaji else {return}
+        if let selectedDate = self.selectedDate {
+            let alarm = Alarm(on: selectedDate, for: label, with: animeData.id, isActive: false)
+            //save alarm to database
+    
+        }
+        
         dismissView()
     }
     

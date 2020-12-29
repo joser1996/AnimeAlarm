@@ -28,7 +28,7 @@ class AlarmManager {
         let nextEp = anime.nextAiringEpisode?.airingAt ?? 0 //if next airing not available ask user to specify time
         let airingDate = Alarm.airingDay(seconds: nextEp)
         let title = anime.title.romaji ?? "No Title"
-        let alarm: Alarm = Alarm(on: airingDate, for: title)
+        let alarm: Alarm = Alarm(on: airingDate, for: title, with: anime.id, isActive: false)
         self.alarms[anime.id] = alarm
     }
     
