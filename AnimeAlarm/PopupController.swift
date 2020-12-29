@@ -62,7 +62,10 @@ class PopupController: UIViewController {
         if let selectedDate = self.selectedDate {
             let alarm = Alarm(on: selectedDate, for: label, with: animeData.id, isActive: false)
             //save alarm to database
-    
+            //for now allow duplicates might change it to only one alarm per anime show... not sure yet
+            DBClient.shared.writeAlarm(alarm: alarm)
+            
+            //activate alarm
         }
         
         dismissView()
@@ -70,6 +73,35 @@ class PopupController: UIViewController {
     
     @objc private func defaultAction() {
         print("Default Action!")
+        guard let animeData = self.animeData else {
+            print("No anime data passed")
+            return
+        }
+        guard let label = animeData.title.romaji else { return }
+        if let airingTime = animeData.nextAiringEpisode?.airingAt {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .medium
+            let airingDate = Alarm.airingDay(seconds: airingTime)
+            print("Airing at: \(dateFormatter.string(from: airingDate))")
+            guard let alarmDate = Calendar.current.date(byAdding: .minute, value: -30, to: airingDate) else {return}
+            //TODO: Make sure alarm data hasn't passed already
+            print("Alarm Date: \(dateFormatter.string(from: alarmDate))")
+            let alarm = Alarm(on: alarmDate, for: label, with: animeData.id, isActive: false)
+            
+            //make sure that alarm is valid before writing
+            DBClient.shared.writeAlarm(alarm: alarm)
+            
+            //activate alarm
+            
+            
+        } else {
+            //should not be here button should be disabled if no next airing episode
+            print("No next episode")
+            return
+        }
+
+        
         dismissView()
     }
     
