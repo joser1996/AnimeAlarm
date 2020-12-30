@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+ 
 class RowCellView: BaseCellView {
     
     //MARK: Properties

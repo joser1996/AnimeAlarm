@@ -35,7 +35,7 @@ class HomeController: UICollectionViewController {
     // MARK: Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //configuring image cache
         imageCache.countLimit = config.countLimit
         imageCache.totalCostLimit = config.memoryLimit
         
@@ -74,7 +74,8 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if(indexPath.item == 0) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId1, for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId1, for: indexPath) as! SavedCellView
+            cell.animeData = self.animeData
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! RowCellView
@@ -101,6 +102,9 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
     
     //push infoViewController
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if(indexPath.item == 0){
+            return
+        }
         if let navigator = navigationController {
             if let animeData = self.animeData {
                 let animeObj = animeData[indexPath.item-1]

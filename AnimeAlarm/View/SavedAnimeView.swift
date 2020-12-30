@@ -11,6 +11,10 @@ class SavedAnimeView: UIView {
     
     //MARK: Properties
     let cellId = "cellId"
+    var savedAlarms: [Alarm]?
+    var animeData: [MediaItem]?
+    
+    
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -41,6 +45,9 @@ class SavedAnimeView: UIView {
         
         //Register cell for collection view
         collectionView.register(SavedAnimeViewCell.self, forCellWithReuseIdentifier: cellId)
+        
+        //load the alarms initially in DB
+        self.savedAlarms = DBClient.shared.dumpDB()
     }
     
     required init?(coder: NSCoder) {
@@ -54,12 +61,27 @@ extension SavedAnimeView: UICollectionViewDelegate, UICollectionViewDataSource, 
     
     //Returns the number of cells
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return savedAlarms?.count ?? 1
     }
     
     //dequeues the reusable cell that will be used by collectionView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SavedAnimeViewCell
+        if let savedAlarms = self.savedAlarms {
+            let alarm = savedAlarms[indexPath.item]
+            let animeID = alarm.animeID
+            //save image url instead
+            
+            //find image url
+            if let animeData = self.animeData {
+                for show in animeData {
+                    if(show.id == animeID) {
+                        cell.cellData = show
+                        break
+                    }
+                }
+            }
+        }
         //cell.backgroundColor = .red
         return cell
     }

@@ -23,6 +23,23 @@ class SavedAnimeViewCell: BaseCellView {
         return tn
     }()
     
+    var cellData: MediaItem? {
+        didSet {
+            let imageURL = cellData?.coverImage.large ?? ""
+            if(imageURL == ""){
+                thumbNailView.image = nil
+                thumbNailView.backgroundColor = .gray
+            } else {
+                thumbNailView.loadImageUsing(urlString: imageURL) { image in
+                    self.thumbNailView.image = image
+                    self.thumbNailView.contentMode = .scaleAspectFill
+                    self.thumbNailView.clipsToBounds = true
+                }
+            }
+        }
+    }
+    
+    
     override func setUpViews() {
         super.setUpViews()
         addSubview(thumbNailView)

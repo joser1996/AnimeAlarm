@@ -28,7 +28,9 @@ class Alarm {
     var label: String
     var animeID: Int
     var active: Bool
-    
+    //set after db read
+    var alarmID: Int?
+    var airingDate: Date?
     //MARK: Initializer
     init(on date: Date, for label: String, with id: Int, isActive: Bool) {
         self.alertDate = date
