@@ -23,6 +23,8 @@ class SavedCellView: BaseCellView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    
     override func setUpViews() {
         addSubview(savedAnimeView)
         savedAnimeView.translatesAutoresizingMaskIntoConstraints = false

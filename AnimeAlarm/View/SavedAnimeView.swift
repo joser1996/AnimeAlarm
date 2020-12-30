@@ -31,6 +31,7 @@ class SavedAnimeView: UIView {
     
     
     // MARK: Methods
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(collectionView)
@@ -48,6 +49,13 @@ class SavedAnimeView: UIView {
         
         //load the alarms initially in DB
         self.savedAlarms = DBClient.shared.dumpDB()
+    }
+    
+    func refreshAlarmsView() {
+        self.savedAlarms = DBClient.shared.dumpDB()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
     
     required init?(coder: NSCoder) {

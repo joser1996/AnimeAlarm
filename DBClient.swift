@@ -82,26 +82,39 @@ class DBClient {
         
     }
     
+    func buildAlarms(rows: [Row]) -> [Alarm] {
+        var alarms: [Alarm] = []
+        for row in rows {
+            let alarmID: Int = row["id"]
+            let animeID: Int = row["anime_id"]
+            let animeTitle: String = row["anime_title"]
+            let alarmDate: Date = row["alarm_date_time"]
+            let airingDate: Date = row["airing_date_time"]
+            let isActive: Bool = row["isActive"]
+            
+            let alarm = Alarm(on: alarmDate, for: animeTitle, with: animeID, isActive: isActive)
+            alarm.alarmID = alarmID
+            alarm.airingDate = airingDate
+            alarms.append(alarm)
+        }
+        return alarms
+    }
+    
     //check contents of DB
-    func dumpDB() {
-        guard let dbQueue = self.connection else {return}
-        
+    func dumpDB() -> [Alarm]? {
+        guard let dbQueue = self.connection else {return nil}
+        var ret: [Alarm]? = nil
         do {
             try dbQueue.read { db in
                 let rows = try Row.fetchAll(db, sql: "SELECT * FROM alarms")
-                for row in rows {
-//                    let dbValue: Date = row["alarm_date_time"]
-//                    let dateFormatter = DateFormatter()
-//                    dateFormatter.dateStyle = .medium
-//                    dateFormatter.timeStyle = .medium
-//                    print("Alarm Date in DB: \(dateFormatter.string(from: dbValue))")
-                    print("\(row)")
-                }
+                let alarms = buildAlarms(rows: rows)
+                ret = alarms
             }
         } catch {
             print("Failed to dumb db")
             print("Error: \(error.localizedDescription)")
         }
+        return ret
     }
     
     //delete alarm

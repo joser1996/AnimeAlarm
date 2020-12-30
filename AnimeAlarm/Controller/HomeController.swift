@@ -30,7 +30,7 @@ class HomeController: UICollectionViewController {
     var airingDates: [Int: Date]?
     
     let config = Config.defaultConfig
-    
+    var refNestedCell: SavedCellView?
     
     // MARK: Functions
     override func viewDidLoad() {
@@ -58,7 +58,11 @@ class HomeController: UICollectionViewController {
         //Fetch the data
         animeClient.getAnimeFor(season: "WINTER", vc: self)
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        guard let nestedCollectionView = self.refNestedCell else {return}
+        nestedCollectionView.savedAnimeView.refreshAlarmsView()
+    }
 }
 
 
@@ -76,6 +80,7 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
         if(indexPath.item == 0) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId1, for: indexPath) as! SavedCellView
             cell.animeData = self.animeData
+            self.refNestedCell = cell
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! RowCellView
