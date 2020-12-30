@@ -30,7 +30,9 @@ class DBClient {
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     anime_id INTEGER NOT NULL,
                     anime_title TEXT NOT NULL,
-                    alarm_date_time TEXT NOT NULL
+                    alarm_date_time TEXT NOT NULL,
+                    airing_date_time TEXT NOT NULL,
+                    isActive INTEGER NOT NULL
                     )
                     """)
             }
@@ -42,7 +44,7 @@ class DBClient {
     
     private func connectToDB() {
         do{
-            let dbQueue = try DatabaseQueue( path: "\(path)/db.sqlite")
+            let dbQueue = try DatabaseQueue( path: "\(path)/alarms_db.sqlite")
             
             //check to see if table exist
             let isCreated =  try dbQueue.read {db in
@@ -60,7 +62,7 @@ class DBClient {
     }
     
     //write to db
-    func writeAlarm(alarm: Alarm) {
+    func writeAlarm(alarm: Alarm, airingDate: Date) {
         let animeID = alarm.animeID
         let animeTitle = alarm.label
         let alarmDate = alarm.alertDate
@@ -69,8 +71,8 @@ class DBClient {
         do {
             try dbQueue.write { db in
                 try db.execute(
-                    sql: "INSERT INTO alarms (anime_id, anime_title, alarm_date_time) VALUES(?, ?, ?)",
-                    arguments: [animeID, animeTitle, alarmDate]
+                    sql: "INSERT INTO alarms (anime_id, anime_title, alarm_date_time, airing_date_time, isActive) VALUES(?, ?, ?, ?, ?)",
+                    arguments: [animeID, animeTitle, alarmDate, airingDate, alarm.active]
                 )
             }
         } catch {
@@ -88,6 +90,11 @@ class DBClient {
             try dbQueue.read { db in
                 let rows = try Row.fetchAll(db, sql: "SELECT * FROM alarms")
                 for row in rows {
+//                    let dbValue: Date = row["alarm_date_time"]
+//                    let dateFormatter = DateFormatter()
+//                    dateFormatter.dateStyle = .medium
+//                    dateFormatter.timeStyle = .medium
+//                    print("Alarm Date in DB: \(dateFormatter.string(from: dbValue))")
                     print("\(row)")
                 }
             }

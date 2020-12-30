@@ -44,7 +44,7 @@ class PopupController: UIViewController {
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .medium
             dateFormatter.timeStyle = .short
-            //print("Date: \(dateFormatter.string(from: datePicker.date))")
+            print("Date: \(dateFormatter.string(from: datePicker.date))")
             self.popupView.textField.text = dateFormatter.string(from: datePicker.date)
             self.selectedDate = datePicker.date
         }
@@ -59,13 +59,22 @@ class PopupController: UIViewController {
             return
         }
         guard let label = animeData.title.romaji else {return}
+        guard let airingAt = animeData.nextAiringEpisode?.airingAt else {return}
+        let airingDate = Alarm.airingDay(seconds: airingAt)
         if let selectedDate = self.selectedDate {
             let alarm = Alarm(on: selectedDate, for: label, with: animeData.id, isActive: false)
+            
+            //TODO: Set up local notification here
+            
             //save alarm to database
             //for now allow duplicates might change it to only one alarm per anime show... not sure yet
-            DBClient.shared.writeAlarm(alarm: alarm)
             
-            //activate alarm
+            print("Before: ")
+            DBClient.shared.dumpDB()
+            print("Writing: ")
+            DBClient.shared.writeAlarm(alarm: alarm, airingDate: airingDate)
+            print("After: ")
+            DBClient.shared.dumpDB()
         }
         
         dismissView()
@@ -90,7 +99,7 @@ class PopupController: UIViewController {
             let alarm = Alarm(on: alarmDate, for: label, with: animeData.id, isActive: false)
             
             //make sure that alarm is valid before writing
-            DBClient.shared.writeAlarm(alarm: alarm)
+            DBClient.shared.writeAlarm(alarm: alarm, airingDate: airingDate)
             
             //activate alarm
             
@@ -100,8 +109,6 @@ class PopupController: UIViewController {
             print("No next episode")
             return
         }
-
-        
         dismissView()
     }
     
