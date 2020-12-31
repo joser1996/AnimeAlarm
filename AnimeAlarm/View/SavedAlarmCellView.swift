@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SavedAnimeViewCell: BaseCellView {
+class SavedAlarmCellView: BaseCellView {
     
     //MARK: Properties
     lazy var thumbNailView: UIImageView = {

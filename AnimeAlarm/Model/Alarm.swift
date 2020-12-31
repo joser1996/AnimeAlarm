@@ -7,18 +7,6 @@
 
 import Foundation
 
-//
-//struct DateObj {
-//    let month: Int
-//    let day: Int
-//    let year: Int
-//    let time: TimeObj
-//}
-//
-//struct TimeObj {
-//    let hour: Int
-//    let min: Int
-//}
 
 class Alarm {
     

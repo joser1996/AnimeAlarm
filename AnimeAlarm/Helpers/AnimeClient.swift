@@ -16,7 +16,7 @@ class AnimeClient {
     var responseItem: ResponseFormat?
     let baseURL: String = "https://graphql.anilist.co"
     var animeData: [MediaItem]?
-    
+    var animeDataIndex: [Int: Int]?
     
     //MARK: Methods
     private init() {
@@ -57,11 +57,14 @@ class AnimeClient {
                 let result = try JSONDecoder().decode(ResponseFormat.self, from: data)
                 let mediaArray = result.data.Page.media
                 var tempArr: [MediaItem] = []
-                for item in mediaArray {
+                var tempIndex: [Int: Int] = [:]
+                for (index, item) in mediaArray.enumerated() {
                     tempArr.append(item)
+                    tempIndex[item.id] = index
                 }
                 //saving array of anime objs
                 self.animeData = tempArr
+                self.animeDataIndex = tempIndex
                 DispatchQueue.main.async {
                     vc.collectionView.reloadData()
                 }
@@ -69,6 +72,15 @@ class AnimeClient {
                 print("JSON Error: \(error.localizedDescription)")
             }
         }.resume()
+    }
+    
+    func getAnimeData(forID: Int) -> MediaItem? {
+        guard let animeDataIndex = self.animeDataIndex else { return nil }
+        guard let animeData = self.animeData else { return nil }
+        if let index = animeDataIndex[forID] {
+            return animeData[index]
+        }
+        return nil
     }
     
 }

@@ -25,7 +25,7 @@ class HomeController: UICollectionViewController {
     //Controls Detailed Information View
     let animeInfoController = AnimeInfoController()
     //Reference to first cell that hold nested collection view
-    var refNestedCell: SavedCellView?
+    var refNestedCell: NestedCollectionViewCell?
     
     // MARK: Methods
     override func viewDidLoad() {
@@ -37,7 +37,7 @@ class HomeController: UICollectionViewController {
         //register cells
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(RowCellView.self, forCellWithReuseIdentifier: cellId)
-        collectionView.register(SavedCellView.self, forCellWithReuseIdentifier: cellId1)
+        collectionView.register(NestedCollectionViewCell.self, forCellWithReuseIdentifier: cellId1)
 
         navigationItem.title = "Winter 2021"
         navigationController?.navigationBar.isTranslucent = false
@@ -64,19 +64,19 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         //First cell is special (Collection View Horizontal Scroll)
         if(indexPath.item == 0) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId1, for: indexPath) as! SavedCellView
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId1, for: indexPath) as! NestedCollectionViewCell
             cell.animeData = AnimeClient.shared.animeData
             self.refNestedCell = cell
             return cell
         }
         
         //Regular row cell
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! RowCellView
+        let rowCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! RowCellView
         if let animeData = AnimeClient.shared.animeData {
-            cell.animeData = animeData[indexPath.item - 1]
+            rowCell.data = animeData[indexPath.item - 1]
         }
-        cell.backgroundColor = .secondarySystemGroupedBackground
-        return cell
+        rowCell.backgroundColor = .secondarySystemGroupedBackground
+        return rowCell
     }
 
     //cell size
@@ -94,14 +94,11 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
     
     //push infoViewController
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if(indexPath.item == 0){
-            return
-        }
+        if(indexPath.item == 0){ return }
+        
         if let navigator = navigationController {
             if let animeData = AnimeClient.shared.animeData {
-                let animeObj = animeData[indexPath.item-1]
-                //forwarding data
-                self.animeInfoController.animeData = animeObj
+                self.animeInfoController.animeData = animeData[indexPath.item - 1]
                 navigator.pushViewController(animeInfoController, animated: false)
             }
         }
@@ -110,7 +107,7 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
     //currently refreshed nested collection view
     override func viewWillAppear(_ animated: Bool) {
         guard let nestedCollectionView = self.refNestedCell else {return}
-        nestedCollectionView.savedAnimeView.refreshAlarmsView()
+        nestedCollectionView.refreshCollectionView()
     }
     
 }

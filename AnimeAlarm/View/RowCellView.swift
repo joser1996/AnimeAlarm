@@ -56,15 +56,15 @@ class RowCellView: BaseCellView {
         return tv
     }()
     
-    var animeData: MediaItem? {
+    var data: MediaItem? {
         didSet {
-            titleView.text = animeData?.title.romaji
+            titleView.text = data?.title.romaji
             
-            let syn = animeData?.description ?? "Synopsis: None provided."
+            let syn = data?.description ?? "Synopsis: None provided."
             let clean = syn.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
             self.truncatedSyn.text = clean
             
-            let imageURL = animeData?.coverImage.large ?? ""
+            let imageURL = data?.coverImage.large ?? ""
             if(imageURL == ""){
                 thumbNail.image = nil
                 thumbNail.backgroundColor = .gray
