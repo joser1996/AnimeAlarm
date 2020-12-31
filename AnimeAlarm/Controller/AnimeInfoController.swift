@@ -45,7 +45,6 @@ class AnimeInfoController: UIViewController {
     }
     
     var imageURLString: String?
-    var airingDates: [Int: Date]?
     var alarms: [Int: Date] = [:]
     
     //MARK: Methods
@@ -105,21 +104,6 @@ class AnimeInfoController: UIViewController {
             animeInfoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             animeInfoView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-    }
-    
-    
-    
-    @objc private func remindMeButtonAction() {
-        print("Remind Me Was Pressed!!!!")
-        guard let animeId = self.animeData?.id else {
-            print("Wasn't able to get anime ID")
-            return
-        }
-        guard let airingDates = self.airingDates else {
-            print("Unable to get airing dates")
-            return
-        }
-        _ = airingDates[animeId] //let airing date
     }
     
 }
