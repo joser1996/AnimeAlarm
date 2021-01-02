@@ -74,6 +74,8 @@ class DBClient {
                     sql: "INSERT INTO alarms (anime_id, anime_title, alarm_date_time, airing_date_time, isActive) VALUES(?, ?, ?, ?, ?)",
                     arguments: [animeID, animeTitle, alarmDate, airingDate, alarm.active]
                 )
+                let rowId = db.lastInsertedRowID
+                alarm.alarmID = Int(exactly: rowId) ?? -1
             }
         } catch {
             print("Failed to write alarm")

@@ -63,18 +63,22 @@ class PopupController: UIViewController {
         let airingDate = Alarm.airingDay(seconds: airingAt)
         if let selectedDate = self.selectedDate {
             let alarm = Alarm(on: selectedDate, for: label, with: animeData.id, isActive: false)
-            
+            alarm.airingDate = airingDate
             //TODO: Set up local notification here
             
             //save alarm to database
             //for now allow duplicates might change it to only one alarm per anime show... not sure yet
             
-            print("Before: ")
-            DBClient.shared.dumpDB()
+//            print("Before: ")
+//            DBClient.shared.dumpDB()
             print("Writing: ")
             DBClient.shared.writeAlarm(alarm: alarm, airingDate: airingDate)
-            print("After: ")
-            DBClient.shared.dumpDB()
+//            print("After: ")
+//            DBClient.shared.dumpDB()
+            
+            let localNotifications = LocalNotifications()
+            localNotifications.createNotificationRequestUsingAlarm(alarm: alarm)
+            
         }
         
         dismissView()

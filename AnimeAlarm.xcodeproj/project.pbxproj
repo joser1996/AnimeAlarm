@@ -23,6 +23,7 @@
 		62BAF48425844E44003F7B2C /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BAF48325844E44003F7B2C /* HomeController.swift */; };
 		62BAF48D2584558A003F7B2C /* RowCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BAF48C2584558A003F7B2C /* RowCellView.swift */; };
 		62BAF495258455B0003F7B2C /* BaseCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BAF494258455B0003F7B2C /* BaseCellView.swift */; };
+		62BBFCA125A0F4520008DD4A /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BBFCA025A0F4520008DD4A /* LocalNotification.swift */; };
 		62C21CE32592B9350018609B /* CreateAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C21CE22592B9350018609B /* CreateAlarmView.swift */; };
 		62C21CE82592BD640018609B /* PopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C21CE72592BD640018609B /* PopupController.swift */; };
 		62DA93D9259E4F64009FF7F3 /* Queries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DA93D8259E4F64009FF7F3 /* Queries.swift */; };
@@ -72,6 +73,7 @@
 		62BAF48325844E44003F7B2C /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		62BAF48C2584558A003F7B2C /* RowCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowCellView.swift; sourceTree = "<group>"; };
 		62BAF494258455B0003F7B2C /* BaseCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCellView.swift; sourceTree = "<group>"; };
+		62BBFCA025A0F4520008DD4A /* LocalNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotification.swift; sourceTree = "<group>"; };
 		62C21CE22592B9350018609B /* CreateAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreateAlarmView.swift; path = AnimeAlarm/CreateAlarmView.swift; sourceTree = SOURCE_ROOT; };
 		62C21CE72592BD640018609B /* PopupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PopupController.swift; path = AnimeAlarm/PopupController.swift; sourceTree = SOURCE_ROOT; };
 		62DA93D8259E4F64009FF7F3 /* Queries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queries.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 		6243002D258070FF00DC6090 /* AnimeAlarm */ = {
 			isa = PBXGroup;
 			children = (
+				62BBFCA025A0F4520008DD4A /* LocalNotification.swift */,
 				62C21CED2592C0C30018609B /* Helpers */,
 				62FBEAB12586DDB600BBFCE2 /* Model */,
 				62BAF48B2584557A003F7B2C /* View */,
@@ -352,6 +355,7 @@
 				6200641C25817B0900806673 /* AnimeClient.swift in Sources */,
 				62BAF495258455B0003F7B2C /* BaseCellView.swift in Sources */,
 				62FBEA9E258549B100BBFCE2 /* SavedAlarmCellView.swift in Sources */,
+				62BBFCA125A0F4520008DD4A /* LocalNotification.swift in Sources */,
 				62FBEAAD2586D73300BBFCE2 /* RowCellModel.swift in Sources */,
 				62430031258070FF00DC6090 /* SceneDelegate.swift in Sources */,
 				62DA93D9259E4F64009FF7F3 /* Queries.swift in Sources */,
