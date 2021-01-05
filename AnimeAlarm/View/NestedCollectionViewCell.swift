@@ -36,11 +36,19 @@ class NestedCollectionViewCell: BaseCellView {
         collectionView.register(SavedAlarmCellView.self, forCellWithReuseIdentifier: cellId)
         collectionView.delegate = self
         collectionView.dataSource = self
-        self.savedAlarms = DBClient.shared.dumpDB()
+        self.savedAlarms = loadAlarms()
+    }
+    
+    private func loadAlarms() -> [Alarm]? {
+        guard let alarmsArr: [Alarm] = DBClient.shared.dumpDB() else {
+            print("In loadAlarms():: Wasn't able to load alarms")
+            return nil
+        }
+        return alarmsArr.sorted(by: {$0.alertDate < $1.alertDate})
     }
     
     func refreshCollectionView() {
-        self.savedAlarms = DBClient.shared.dumpDB()
+        self.savedAlarms = loadAlarms()
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
