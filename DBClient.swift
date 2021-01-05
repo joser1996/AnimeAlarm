@@ -135,4 +135,18 @@ class DBClient {
         }
     }
     
+    func wipeDB() {
+        guard let dbQueue = self.connection else {return}
+        do {
+            try dbQueue.write { db in
+                try db.execute(
+                    sql: "DELETE FROM alarms"
+                )
+            }
+        } catch {
+            print("Unable to delete everything")
+            print("Error: \(error.localizedDescription)")
+        }
+    }
+    
 }

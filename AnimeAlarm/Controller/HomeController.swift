@@ -47,11 +47,34 @@ class HomeController: UICollectionViewController {
         
         //Fetch the data
         AnimeClient.shared.getAnimeFor(season: "WINTER", vc: self)
+        
+//        DBClient.shared.wipeDB()
+        //This should be in app deleage to ensure you don't miss any notifications
+        UNUserNotificationCenter.current().delegate = self
     }
     
 }
 
+extension HomeController: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("Recieved notification while in foreground")
+        //show alert
+        completionHandler([.banner, .sound])
 
+        let _ = notification.request.content
+
+        //update interface
+        let notificationID = notification.request.identifier
+        guard let alarmID = Int(notificationID) else {
+            print("Failed to get alarm id")
+            return
+            
+        }
+        //remove alarm
+        DBClient.shared.deleteAlarm(alarm_id: alarmID)
+        self.refNestedCell?.refreshCollectionView()
+    }
+}
 
 //MARK: Delegate Funcitons
 extension HomeController: UICollectionViewDelegateFlowLayout {
