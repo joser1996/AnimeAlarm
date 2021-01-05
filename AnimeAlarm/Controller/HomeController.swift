@@ -51,6 +51,32 @@ class HomeController: UICollectionViewController {
 //        DBClient.shared.wipeDB()
         //This should be in app deleage to ensure you don't miss any notifications
         UNUserNotificationCenter.current().delegate = self
+        self.cleanAlarmView()
+    }
+    
+    
+    func cleanAlarmView() {
+        guard let savedAlarms = DBClient.shared.dumpDB() else {return}
+        var pendingIDs: [Int] = []
+        UNUserNotificationCenter.current().getPendingNotificationRequests { notifications in
+            for notification in notifications {
+                let id = notification.identifier
+                if let alarmID = Int(id)  {
+                    pendingIDs.append(alarmID)
+                }
+            }
+            
+            //for any alarm not found in pending remove
+            for alarm in savedAlarms {
+                if let alarmID = alarm.alarmID {
+                    if !pendingIDs.contains(alarmID) {
+                        DBClient.shared.deleteAlarm(alarm_id: alarmID)
+                    }
+                }
+            }
+            
+            self.refNestedCell?.refreshCollectionView()
+        }
     }
     
 }
@@ -172,8 +198,7 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
     
     //currently refreshed nested collection view
     override func viewWillAppear(_ animated: Bool) {
-        guard let nestedCollectionView = self.refNestedCell else {return}
-        nestedCollectionView.refreshCollectionView()
+        self.cleanAlarmView()
     }
     
 }

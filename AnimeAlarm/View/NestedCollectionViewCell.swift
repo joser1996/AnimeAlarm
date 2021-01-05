@@ -38,7 +38,7 @@ class NestedCollectionViewCell: BaseCellView {
         collectionView.dataSource = self
         self.savedAlarms = loadAlarms()
     }
-    
+
     private func loadAlarms() -> [Alarm]? {
         guard let alarmsArr: [Alarm] = DBClient.shared.dumpDB() else {
             print("In loadAlarms():: Wasn't able to load alarms")
