@@ -65,13 +65,14 @@ extension NestedCollectionViewCell: UICollectionViewDelegate, UICollectionViewDa
             let animeID = alarm.animeID
             if let cellData = AnimeClient.shared.getAnimeData(forID: animeID) {
                 cell.cellData = cellData
+                cell.cellAlarm = alarm
             }
         }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 180, height: 250)
+        return CGSize(width: 180, height: 300) //old height 250
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 1

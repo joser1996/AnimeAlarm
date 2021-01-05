@@ -63,7 +63,7 @@ class LocalNotifications {
         notificationCenter.add(request) { error in
             if(error != nil) {
                 //handle any errors here
-                print("Error creating notification request: \(error?.localizedDescription)")
+                print("Error creating notification request: \(String(describing: error?.localizedDescription))")
                 alarm.active = false
             }
             //if we didn't fail mark alarm as active
