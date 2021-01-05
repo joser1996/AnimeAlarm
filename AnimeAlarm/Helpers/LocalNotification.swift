@@ -24,6 +24,8 @@ class LocalNotifications {
         content.title = title
         content.body = body
         content.sound = .default
+        content.categoryIdentifier = "ALARM"
+        
         return content
     }
     

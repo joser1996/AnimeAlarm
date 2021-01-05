@@ -56,6 +56,8 @@ class HomeController: UICollectionViewController {
 }
 
 extension HomeController: UNUserNotificationCenterDelegate {
+    
+    //when the app is running in the foreground
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("Recieved notification while in foreground")
         //show alert
@@ -73,6 +75,47 @@ extension HomeController: UNUserNotificationCenterDelegate {
         //remove alarm
         DBClient.shared.deleteAlarm(alarm_id: alarmID)
         self.refNestedCell?.refreshCollectionView()
+    }
+    
+    //when the user selects a custom action
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("In custom action")
+        guard let savedAlarms = DBClient.shared.dumpDB() else {return}
+        var pendingIDs: [Int] = []
+        
+        UNUserNotificationCenter.current().getPendingNotificationRequests { notifications in
+            for notification in notifications {
+                let id = notification.identifier
+                if let alarmID = Int(id)  {
+                    pendingIDs.append(alarmID)
+                }
+            }
+            
+            //for any alarm not found in pending remove
+            for alarm in savedAlarms {
+                if let alarmID = alarm.alarmID {
+                    if !pendingIDs.contains(alarmID) {
+                        DBClient.shared.deleteAlarm(alarm_id: alarmID)
+                    }
+                }
+            }
+            
+            self.refNestedCell?.refreshCollectionView()
+        }
+        
+
+        
+        
+        switch response.actionIdentifier {
+        case "DISMISS_ACTION":
+            print("DismissAction")
+            break
+        case "SNOOZE_ACTION":
+            print("Snooze action")
+            break
+        default:
+            break
+        }
     }
 }
 

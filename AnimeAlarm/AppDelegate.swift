@@ -46,6 +46,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         registerForPushNotifications()
         
         //assign delegate for notification center here
+        
+        //notification categories
+        let dismissAction = UNNotificationAction(identifier: "DISMISS_ACTION", title: "Dismiss", options: UNNotificationActionOptions(rawValue: 0))
+        let snoozeAction = UNNotificationAction(identifier: "SNOOZE_ACTION", title: "Snooze", options: UNNotificationActionOptions(rawValue: 0))
+        let alarmCategory = UNNotificationCategory(identifier: "ALARM", actions: [dismissAction, snoozeAction], intentIdentifiers: [], options: .customDismissAction)
+        
+        UNUserNotificationCenter.current().setNotificationCategories([alarmCategory])
         return true
     }
 
