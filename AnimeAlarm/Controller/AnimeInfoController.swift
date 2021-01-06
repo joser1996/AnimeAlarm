@@ -18,6 +18,21 @@ class AnimeInfoController: UIViewController {
             let title: String = animeData?.title.romaji ?? "No Title"
             let imageURL: String? = animeData?.coverImage.large
             let syn: String? = animeData?.description ?? nil
+            let airingAt = animeData?.nextAiringEpisode?.airingAt
+            var nextDateString: String = "Next: "
+            
+            if airingAt != nil {
+                let nextDate = Alarm.airingDay(seconds: airingAt!)
+                let formatter = DateFormatter()
+                formatter.timeStyle = .short
+                formatter.dateStyle = .short
+                nextDateString += formatter.string(from: nextDate)
+            } else {
+                nextDateString += "N/A"
+            }
+            
+            //set date label
+            animeInfoView.nextAiringDate.text = nextDateString
             
             //set title
             animeInfoView.titleView.text = title

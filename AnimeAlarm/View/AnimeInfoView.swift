@@ -51,11 +51,24 @@ class AnimeInfoView: UIView {
 
         return syn
     }()
-        
+    
+    var nextAiringDate: UILabel = {
+        let label = UILabel()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        label.text = "Next: " + dateFormatter.string(from: Date())
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .systemRed
+        return label
+    }()
+    
     //MARK: Methods
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(titleView)
+        addSubview(nextAiringDate)
         addSubview(thumbNail)
         addSubview(synopsis)
         
@@ -63,16 +76,24 @@ class AnimeInfoView: UIView {
         NSLayoutConstraint.activate([
             titleView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
             titleView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
-            titleView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            titleView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             titleView.heightAnchor.constraint(greaterThanOrEqualToConstant: 50)
         ])
         
         NSLayoutConstraint.activate([
-            thumbNail.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: 16),
+            nextAiringDate.topAnchor.constraint(equalTo: titleView.bottomAnchor),
+            nextAiringDate.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            nextAiringDate.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+        ])
+        
+        
+        NSLayoutConstraint.activate([
+            thumbNail.topAnchor.constraint(equalTo: nextAiringDate.bottomAnchor, constant: 16),
             thumbNail.widthAnchor.constraint(equalToConstant: 180),
             thumbNail.heightAnchor.constraint(equalToConstant: 250),
             thumbNail.centerXAnchor.constraint(equalTo: titleView.centerXAnchor)
         ])
+        
         
         NSLayoutConstraint.activate([
             synopsis.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
