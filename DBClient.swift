@@ -66,6 +66,16 @@ class DBClient {
         let animeID = alarm.animeID
         let animeTitle = alarm.label
         let alarmDate = alarm.alertDate
+
+        guard let doesExist = doesAlarmExist(animeID: animeID) else {
+            print("Does exist failed")
+            return
+        }
+        
+        if doesExist {
+            print("Alarm already exists. Not Writing again")
+            return
+        }
         
         guard let dbQueue = self.connection else {return}
         do {
@@ -82,6 +92,26 @@ class DBClient {
             print("Error: \(error.localizedDescription)")
         }
         
+    }
+    
+    func doesAlarmExist(animeID: Int) -> Bool? {
+        guard let dbQueue = self.connection else {return nil}
+        var retVal = false
+        do {
+            try dbQueue.read { db in
+                if let _ = try Row.fetchOne(db, sql: "SELECT * From alarms WHERE anime_id = ?", arguments: [animeID] ) {
+                    print("It already exists")
+                    retVal = true
+                } else {
+                    print("Doesn't exist")
+                    retVal = false
+                }
+            }
+        } catch {
+            print("Failed in doesAlarmExist")
+            print("Error: \(error.localizedDescription)")
+        }
+        return retVal
     }
     
     func buildAlarms(rows: [Row]) -> [Alarm] {

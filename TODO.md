@@ -1,7 +1,5 @@
 
 # ToDO
-* Need to add alarm verification
-	* Unique Alarms per Show
 * Placeholder for saved anime view when no alarms are present
 
 * Filter content to only show anime show
