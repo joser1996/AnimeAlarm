@@ -114,7 +114,6 @@
 		62430022258070FF00DC6090 = {
 			isa = PBXGroup;
 			children = (
-				626D2D24259BB01D00CF7616 /* DBClient.swift */,
 				6243002D258070FF00DC6090 /* AnimeAlarm */,
 				624300472580710400DC6090 /* AnimeAlarmTests */,
 				624300522580710400DC6090 /* AnimeAlarmUITests */,
@@ -194,6 +193,7 @@
 		62C21CED2592C0C30018609B /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				626D2D24259BB01D00CF7616 /* DBClient.swift */,
 				62BBFCA025A0F4520008DD4A /* LocalNotification.swift */,
 				6200641B25817B0900806673 /* AnimeClient.swift */,
 				6285D74A258C1D30003371AF /* AlarmManager.swift */,

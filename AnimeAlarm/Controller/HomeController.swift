@@ -46,7 +46,7 @@ class HomeController: UICollectionViewController {
         collectionView.delegate = self
         
         //Fetch the data
-        AnimeClient.shared.getAnimeFor(season: "WINTER", vc: self)
+        AnimeClient.shared.getAnimeFor(season: "WINTER", vc: self, currentPage: 1)
         
 //        DBClient.shared.wipeDB()
         //This should be in app deleage to ensure you don't miss any notifications
