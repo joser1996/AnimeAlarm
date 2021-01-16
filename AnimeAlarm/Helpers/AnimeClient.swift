@@ -17,11 +17,14 @@ class AnimeClient {
     let baseURL: String = "https://graphql.anilist.co"
     var animeData: [MediaItem]? = []
     var animeDataIndex: [Int: Int]? = [:]
-    
+    var airingToday: [MediaItem]? = []
+    var todaysDate: Date
     
     //MARK: Methods
     private init() {
         print("Do Nothing")
+        //get todays date
+        self.todaysDate = Date()
     }
      
     //returns JSON object that will be request
@@ -86,6 +89,22 @@ class AnimeClient {
             return animeData[index]
         }
         return nil
+    }
+    
+    func buildAiringToday(currentDate: Date) {
+        guard let animeData = self.animeData else {return}
+        let calander = Calendar.current
+        let today = calander.component(.day, from: currentDate)
+        for item in animeData {
+            if let airingAt = item.nextAiringEpisode?.airingAt {
+                let airingDate = Alarm.airingDay(seconds: airingAt)
+                let airingDay = calander.component(.day, from: airingDate)
+                if airingDay == today {
+                    self.airingToday?.append(item)
+                }
+            }
+        }
+        
     }
     
 }

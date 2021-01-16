@@ -12,6 +12,7 @@ class NestedCollectionViewCell: BaseCellView {
     let cellId = "alarmCellID"
     var savedAlarms: [Alarm]?
     var animeData: [MediaItem]?
+    var airingToday: [MediaItem]?
     
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -47,11 +48,16 @@ class NestedCollectionViewCell: BaseCellView {
         return alarmsArr.sorted(by: {$0.alertDate < $1.alertDate})
     }
     
-    func refreshCollectionView() {
-        self.savedAlarms = loadAlarms()
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
+    func refreshCollectionView(showingAlarms: Bool) {
+        if showingAlarms {
+            self.savedAlarms = loadAlarms()
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        } else {
+            
         }
+
     }
     
     required init?(coder: NSCoder) {
