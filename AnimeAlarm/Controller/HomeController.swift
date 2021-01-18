@@ -26,8 +26,6 @@ class HomeController: UICollectionViewController {
     let animeInfoController = AnimeInfoController()
     //Reference to first cell that hold nested collection view
     var refNestedCell: NestedCollectionViewCell?
-    //showing saved alarms
-    var showingAlarmView: Bool = true
     
     // MARK: Methods
     override func viewDidLoad() {
@@ -52,7 +50,7 @@ class HomeController: UICollectionViewController {
         
         //Fetch the data
         AnimeClient.shared.getAnimeFor(season: "WINTER", vc: self, currentPage: 1)
-        AnimeClient.shared.buildAiringToday(currentDate: Date())
+//        AnimeClient.shared.buildAiringToday(currentDate: Date())
         
 //      DBClient.shared.wipeDB()
         //This should be in app deleage to ensure you don't miss any notifications
@@ -62,9 +60,12 @@ class HomeController: UICollectionViewController {
     
     @objc func toggleAction() {
         //switch whatever the nested view is showing
-        self.showingAlarmView.toggle()
-        //reload the nested collection view
-        self.refNestedCell?.refreshCollectionView(showingAlarms: self.showingAlarmView)
+        print("Toggling View")
+        self.refNestedCell?.isShowingAlarms.toggle()
+        if AnimeClient.shared.airingToday?.count == 0 {
+            AnimeClient.shared.buildAiringToday(currentDate: Date())
+        }
+        self.refNestedCell?.refreshCollectionView()
     }
     
     func cleanAlarmView() {
@@ -87,7 +88,7 @@ class HomeController: UICollectionViewController {
                 }
             }
             
-            self.refNestedCell?.refreshCollectionView(showingAlarms: self.showingAlarmView)
+            self.refNestedCell?.refreshCollectionView()
         }
     }
     
@@ -112,7 +113,7 @@ extension HomeController: UNUserNotificationCenterDelegate {
         }
         //remove alarm
         DBClient.shared.deleteAlarm(alarm_id: alarmID)
-        self.refNestedCell?.refreshCollectionView(showingAlarms: self.showingAlarmView)
+        self.refNestedCell?.refreshCollectionView()
     }
     
     //when the user selects a custom action
@@ -138,10 +139,9 @@ extension HomeController: UNUserNotificationCenterDelegate {
                 }
             }
             
-            self.refNestedCell?.refreshCollectionView(showingAlarms: self.showingAlarmView)
+            self.refNestedCell?.refreshCollectionView()
         }
         
-
         switch response.actionIdentifier {
         case "DISMISS_ACTION":
             print("DismissAction")
@@ -167,8 +167,6 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
         //First cell is special (Collection View Horizontal Scroll)
         if(indexPath.item == 0) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId1, for: indexPath) as! NestedCollectionViewCell
-            cell.animeData = AnimeClient.shared.animeData
-            cell.airingToday = AnimeClient.shared.airingToday
             
             self.refNestedCell = cell
             return cell

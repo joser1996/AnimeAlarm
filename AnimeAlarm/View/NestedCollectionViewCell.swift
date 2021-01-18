@@ -10,10 +10,10 @@ import UIKit
 class NestedCollectionViewCell: BaseCellView {
     //MARK: Properties
     let cellId = "alarmCellID"
-    var savedAlarms: [Alarm]?
-    var animeData: [MediaItem]?
-    var airingToday: [MediaItem]?
+    var isShowingAlarms: Bool = true
+    var dataSource: [NestedCellData]?
     
+    //neseted collection view
     var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -24,6 +24,7 @@ class NestedCollectionViewCell: BaseCellView {
     }()
     
     
+    //MARK: Methods
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(collectionView)
@@ -34,12 +35,15 @@ class NestedCollectionViewCell: BaseCellView {
             collectionView.topAnchor.constraint(equalTo: self.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
-        collectionView.register(SavedAlarmCellView.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(NestedCellView.self, forCellWithReuseIdentifier: cellId)
         collectionView.delegate = self
         collectionView.dataSource = self
-        self.savedAlarms = loadAlarms()
+        
+        //set source to be alarms
+        changeDataSourceToAlarm()
     }
 
+    //returns array of alarm objects from DB
     private func loadAlarms() -> [Alarm]? {
         guard let alarmsArr: [Alarm] = DBClient.shared.dumpDB() else {
             print("In loadAlarms():: Wasn't able to load alarms")
@@ -48,17 +52,48 @@ class NestedCollectionViewCell: BaseCellView {
         return alarmsArr.sorted(by: {$0.alertDate < $1.alertDate})
     }
     
-    func refreshCollectionView(showingAlarms: Bool) {
-        if showingAlarms {
-            self.savedAlarms = loadAlarms()
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
+    //reloads the nested collection view
+    func refreshCollectionView() {
+        if isShowingAlarms {
+            changeDataSourceToAlarm()
         } else {
-            
+            changeDataSourceToAiringToday()
+            self.dataSource = self.dataSource?.sorted(by: {$0.date < $1.date})
         }
-
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
+    
+    func changeDataSourceToAlarm() {
+        guard let savedAlarms = self.loadAlarms() else {return}
+        var tempArray: [NestedCellData] = []
+        //get image url
+        for alarm in savedAlarms {
+            let animeID = alarm.animeID
+            let dataIndex = AnimeClient.shared.animeDataIndex?[animeID]
+            var imageURL: String = ""
+            if dataIndex != nil {
+                let media = AnimeClient.shared.animeData?[dataIndex!]
+                imageURL = media?.coverImage.large ?? ""
+            }
+            let cellData = NestedCellData(title: alarm.label, imageURL:imageURL, date: alarm.alertDate)
+            tempArray.append(cellData)
+        }
+        self.dataSource = tempArray
+    }
+    
+    func changeDataSourceToAiringToday() {
+        guard let airingToday = AnimeClient.shared.airingToday else {return}
+        var tempArray: [NestedCellData] = []
+        for episode in airingToday {
+            let airingDate = Alarm.airingDay(seconds: episode.nextAiringEpisode?.airingAt ?? 0)
+            let cellData = NestedCellData(title: episode.title.romaji ?? "N/A", imageURL: episode.coverImage.large ?? "", date: airingDate)
+            tempArray.append(cellData)
+        }
+        self.dataSource = tempArray
+    }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -69,18 +104,13 @@ class NestedCollectionViewCell: BaseCellView {
 //MARK: Collection View Delegate Functions
 extension NestedCollectionViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return savedAlarms?.count ?? 1
+        return dataSource?.count ?? 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SavedAlarmCellView
-        if let savedAlarms = self.savedAlarms {
-            let alarm = savedAlarms[indexPath.item]
-            let animeID = alarm.animeID
-            if let cellData = AnimeClient.shared.getAnimeData(forID: animeID) {
-                cell.cellData = cellData
-                cell.cellAlarm = alarm
-            }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! NestedCellView
+        if let dataSource = self.dataSource {
+            cell.cellData = dataSource[indexPath.item]
         }
         return cell
     }
