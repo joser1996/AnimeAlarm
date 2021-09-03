@@ -33,6 +33,7 @@
 		62FBEAA325859A1F00BBFCE2 /* AnimeInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FBEAA225859A1F00BBFCE2 /* AnimeInfoController.swift */; };
 		62FBEAA825859B1800BBFCE2 /* AnimeInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FBEAA725859B1800BBFCE2 /* AnimeInfoView.swift */; };
 		62FBEAAD2586D73300BBFCE2 /* RowCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FBEAAC2586D73300BBFCE2 /* RowCellModel.swift */; };
+		FFD5341F26E2E59B00F33B01 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD5341E26E2E59B00F33B01 /* ImageCache.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		62FBEAA225859A1F00BBFCE2 /* AnimeInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeInfoController.swift; sourceTree = "<group>"; };
 		62FBEAA725859B1800BBFCE2 /* AnimeInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeInfoView.swift; sourceTree = "<group>"; };
 		62FBEAAC2586D73300BBFCE2 /* RowCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowCellModel.swift; sourceTree = "<group>"; };
+		FFD5341E26E2E59B00F33B01 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +202,7 @@
 				6200641B25817B0900806673 /* AnimeClient.swift */,
 				6285D74A258C1D30003371AF /* AlarmManager.swift */,
 				62DA93D8259E4F64009FF7F3 /* Queries.swift */,
+				FFD5341E26E2E59B00F33B01 /* ImageCache.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFD5341F26E2E59B00F33B01 /* ImageCache.swift in Sources */,
 				62C21CE82592BD640018609B /* PopupController.swift in Sources */,
 				6243002F258070FF00DC6090 /* AppDelegate.swift in Sources */,
 				62FBEAA825859B1800BBFCE2 /* AnimeInfoView.swift in Sources */,

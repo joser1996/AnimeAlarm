@@ -7,16 +7,6 @@
 
 import UIKit
 
-struct Config {
-    let countLimit: Int
-    let memoryLimit: Int
-    
-    static let defaultConfig = Config(countLimit: 50, memoryLimit: 1024 * 1024 * 100) // 100 MB
-}
-
-//gloabal variable
-let imageCache = NSCache<AnyObject, AnyObject>()
-
 class HomeController: UICollectionViewController {
     
     // MARK: Properties
@@ -30,9 +20,6 @@ class HomeController: UICollectionViewController {
     // MARK: Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        //configuring image cache
-        imageCache.countLimit = Config.defaultConfig.countLimit
-        imageCache.totalCostLimit = Config.defaultConfig.memoryLimit
         
         //register cells
         collectionView.translatesAutoresizingMaskIntoConstraints = false

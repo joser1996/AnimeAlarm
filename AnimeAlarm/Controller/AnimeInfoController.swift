@@ -7,7 +7,7 @@
 
 import UIKit
 class AnimeInfoController: UIViewController {
-
+  
     //MARK: Properties
     let scrollView = UIScrollView()
     //functioning as content view
@@ -88,7 +88,6 @@ class AnimeInfoController: UIViewController {
         
         view.addSubview(scrollView)
         scrollView.addSubview(animeInfoView)
-        //scrollView.backgroundColor = .red
         scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
@@ -124,47 +123,3 @@ class AnimeInfoController: UIViewController {
 }
 
 
-//rough estimate of how much memeory image uses in bytes
-extension UIImage {
-    var diskSize: Int {
-        get {
-            guard let cgImage = cgImage else {return 0}
-            return cgImage.bytesPerRow * cgImage.height
-        }
-    }
-    
-}
-
-extension UIImageView {
-    
-    func loadImageUsing(urlString: String, completion: @escaping (UIImage) -> Void) {
-        //check to see if image is cached
-        if let img = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
-            print("Using Cache")
-            completion(img)
-            return
-        }
-        
-        let url = URL(string: urlString)!
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            print("Using Data for image")
-            if let error = error {
-                print(error)
-                return
-            }
-            guard let data = data else {
-                print("No Data")
-                return
-            }
-            
-            DispatchQueue.main.async {
-                guard let imageToCache = UIImage(data: data) else {return}
-                //caching image
-                imageCache.setObject(imageToCache, forKey: urlString as AnyObject, cost: imageToCache.diskSize)
-                completion(imageToCache)
-//                self.animeInfoView.thumbNail.image = imageToCache
-            }
-        }.resume()
-    }
-    
-}

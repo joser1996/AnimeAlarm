@@ -60,7 +60,6 @@ struct QueryHelper {
     
     func getQueryObj(currentPage: Int) -> Query{
         let vars = ["page": currentPage, "perPage": 50]
-        let q = Query(request: mainQueryString, variables: vars)
-        return q
+        return Query(request: mainQueryString, variables: vars)
     }
 }
