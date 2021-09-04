@@ -58,8 +58,16 @@ class HomeController: UICollectionViewController {
     
     @objc func changeSeason() {
         print("Changing Season")
-
+        self.present(SeasonsPopoverController(), animated: true, completion: nil)
     }
+    
+//    if let navigator = navigationController {
+//        if let animeData = AnimeClient.shared.animeData {
+//            self.animeInfoController.animeData = animeData[indexPath.item - 1]
+//            navigator.pushViewController(animeInfoController, animated: false)
+//        }
+//    }
+//
     
     func cleanAlarmView() {
         guard let savedAlarms = DBClient.shared.dumpDB() else {return}
