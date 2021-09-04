@@ -10,11 +10,10 @@ import UIKit
 class HomeController: UICollectionViewController {
     
     // MARK: Properties
-    let cellId = "cellId"
-    let cellId1 = "cellId1"
-    //Controls Detailed Information View
+    let rowCellId = "cellId"
+    let nestedCellId = "cellId1"
+    
     let animeInfoController = AnimeInfoController()
-    //Reference to first cell that hold nested collection view
     var refNestedCell: NestedCollectionViewCell?
     
     // MARK: Methods
@@ -23,8 +22,8 @@ class HomeController: UICollectionViewController {
         
         //register cells
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(RowCellView.self, forCellWithReuseIdentifier: cellId)
-        collectionView.register(NestedCollectionViewCell.self, forCellWithReuseIdentifier: cellId1)
+        collectionView.register(RowCellView.self, forCellWithReuseIdentifier: rowCellId)
+        collectionView.register(NestedCollectionViewCell.self, forCellWithReuseIdentifier: nestedCellId)
 
         navigationItem.title = "Winter 2021"
         navigationController?.navigationBar.isTranslucent = false
@@ -153,14 +152,14 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         //First cell is special (Collection View Horizontal Scroll)
         if(indexPath.item == 0) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId1, for: indexPath) as! NestedCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: nestedCellId, for: indexPath) as! NestedCollectionViewCell
             
             self.refNestedCell = cell
             return cell
         }
         
         //Regular row cell
-        let rowCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! RowCellView
+        let rowCell = collectionView.dequeueReusableCell(withReuseIdentifier: rowCellId, for: indexPath) as! RowCellView
         if let animeData = AnimeClient.shared.animeData {
             rowCell.data = animeData[indexPath.item - 1]
         }

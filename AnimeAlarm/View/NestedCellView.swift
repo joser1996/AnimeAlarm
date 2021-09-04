@@ -18,11 +18,8 @@ class NestedCellView: BaseCellView {
     
     lazy var thumbNailView: UIImageView = {
         let tn = UIImageView()
-        //DELETE THIS
-        //tn.backgroundColor = .blue
         tn.translatesAutoresizingMaskIntoConstraints = false
         
-        //set image here for now(dummy)
         tn.image = UIImage(named: "danmachi")
         tn.contentMode = .scaleAspectFill
         tn.clipsToBounds = true

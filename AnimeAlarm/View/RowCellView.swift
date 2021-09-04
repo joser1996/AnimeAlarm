@@ -12,7 +12,7 @@ class RowCellView: BaseCellView {
     //MARK: Properties
     lazy var titleView: UILabel = {
         let tv = UILabel(frame: .zero)
-        tv.text = "This is an Anime Title"
+        tv.text = "This is a Title"
         tv.font = .systemFont(ofSize: 25)
         tv.numberOfLines = 1
         tv.lineBreakMode = .byTruncatingTail
@@ -22,21 +22,20 @@ class RowCellView: BaseCellView {
     
     lazy var seperatorView: UIView = {
         let sv = UIView()
-        sv.backgroundColor = .black
+        sv.backgroundColor = .gray
         sv.translatesAutoresizingMaskIntoConstraints = false
         return sv
     }()
     
     lazy var thumbNail: UIImageView = {
         let tn = UIImageView()
-        tn.backgroundColor = .red
         tn.translatesAutoresizingMaskIntoConstraints = false
         return tn
     }()
     
     let titleHighlight: UIView = {
         let v = UIView()
-        v.backgroundColor = .lightGray
+        v.backgroundColor = .gray
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()

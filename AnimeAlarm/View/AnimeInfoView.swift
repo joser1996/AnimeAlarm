@@ -12,11 +12,9 @@ class AnimeInfoView: UIView {
     //MARK: Properties
     lazy var titleView: UILabel = {
         let tv = UILabel()
-        tv.text = "Generic Title"
+        tv.text = "Title"
         tv.adjustsFontSizeToFitWidth = true
         tv.textAlignment = .center
-        //DELETE
-        //tv.backgroundColor = .red
         tv.font = .systemFont(ofSize: 35)
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
@@ -35,19 +33,13 @@ class AnimeInfoView: UIView {
     lazy var synopsis: UITextView = {
         let syn = UITextView()
         let generic = """
-        This is a very generic piece of text that is meant to be used as a placeholder for the actual text. I Wonder
-        how much of this stuff I'm supposed to write. Okay I'm starting to run out of things to type so I must
-        resort to my ultimate move. Behold the power of copy and paste........ wait for it..... here it comes!
-        Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah
-        Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah
+        This is a very generic piece of text that is meant to be used as a placeholder for the actual text.
         """
         syn.text = generic
         syn.font = .systemFont(ofSize: 25)
         syn.translatesAutoresizingMaskIntoConstraints = false
         syn.isSelectable = false
         syn.isScrollEnabled = false
-        //DELETE
-        //syn.backgroundColor = .cyan
 
         return syn
     }()
