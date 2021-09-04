@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeController: UICollectionViewController {
+class HomeController: UICollectionViewController, UIPopoverPresentationControllerDelegate{
     
     // MARK: Properties
     let rowCellId = "cellId"
@@ -44,6 +44,7 @@ class HomeController: UICollectionViewController {
         //This should be in app deleage to ensure you don't miss any notifications
         UNUserNotificationCenter.current().delegate = self
         self.cleanAlarmView()
+        
     }
     
     @objc func toggleAction() {
@@ -58,16 +59,19 @@ class HomeController: UICollectionViewController {
     
     @objc func changeSeason() {
         print("Changing Season")
-        self.present(SeasonsPopoverController(), animated: true, completion: nil)
+        let popviewController = SeasonsPopoverController(style: .plain)
+        popviewController.preferredContentSize = CGSize(width: 300, height: 200)
+        popviewController.modalPresentationStyle = UIModalPresentationStyle.popover
+        popviewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
+        popviewController.popoverPresentationController?.delegate = self
+        popviewController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        
+        self.present(popviewController, animated: true, completion: nil)
     }
     
-//    if let navigator = navigationController {
-//        if let animeData = AnimeClient.shared.animeData {
-//            self.animeInfoController.animeData = animeData[indexPath.item - 1]
-//            navigator.pushViewController(animeInfoController, animated: false)
-//        }
-//    }
-//
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
     
     func cleanAlarmView() {
         guard let savedAlarms = DBClient.shared.dumpDB() else {return}
