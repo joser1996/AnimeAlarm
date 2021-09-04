@@ -24,7 +24,7 @@ struct QueryHelper {
                     perPage
                 }
 
-                media(season: FALL, seasonYear: 2021, type: ANIME) {
+                media(season: SUMMER, seasonYear: 2021, type: ANIME) {
                     id
                     title {
                         romaji

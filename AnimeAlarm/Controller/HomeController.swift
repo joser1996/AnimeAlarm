@@ -30,6 +30,8 @@ class HomeController: UICollectionViewController {
         //toggle nested collection view button
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(toggleAction))
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(changeSeason))
+        
         // DELETE: this
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.delegate = self
@@ -52,6 +54,11 @@ class HomeController: UICollectionViewController {
             AnimeClient.shared.buildAiringToday(currentDate: Date())
         }
         self.refNestedCell?.refreshCollectionView()
+    }
+    
+    @objc func changeSeason() {
+        print("Changing Season")
+
     }
     
     func cleanAlarmView() {
