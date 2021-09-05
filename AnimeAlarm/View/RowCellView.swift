@@ -146,14 +146,12 @@ extension UIImageView {
     func loadImageUsing(urlString: String, completion: @escaping (UIImage) -> Void) {
         //check to see if image is cached
         if let img = ImageCache.shared.cache.object(forKey: urlString as AnyObject) as? UIImage {
-            print("Using Cache")
             completion(img)
             return
         }
         
         let url = URL(string: urlString)!
         URLSession.shared.dataTask(with: url) { data, response, error in
-            print("Using Data for image")
             if let error = error {
                 print(error)
                 return

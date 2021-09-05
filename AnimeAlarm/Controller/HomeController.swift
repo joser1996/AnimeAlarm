@@ -60,6 +60,7 @@ class HomeController: UICollectionViewController, UIPopoverPresentationControlle
     @objc func changeSeason() {
         print("Changing Season")
         let popviewController = SeasonsPopoverController(style: .plain)
+        popviewController.homeController = self
         popviewController.preferredContentSize = CGSize(width: 300, height: 200)
         popviewController.modalPresentationStyle = UIModalPresentationStyle.popover
         popviewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up

@@ -18,6 +18,7 @@ class AnimeClient {
     var animeData: [MediaItem]? = []
     var animeDataIndex: [Int: Int]? = [:]
     var airingToday: [MediaItem]? = []
+    
     var todaysDate: Date
     
     //MARK: Methods
@@ -27,6 +28,11 @@ class AnimeClient {
         self.todaysDate = Date()
     }
      
+    func clearData() {
+        self.animeData = []
+        self.animeDataIndex = [:]
+    }
+    
     //returns JSON object that will be request
     func createJSON(currentPage: Int, season: Season) -> Data? {
         let query = queryHelper.getQueryObj(currentPage: currentPage, season: season)
@@ -71,6 +77,7 @@ class AnimeClient {
                     self.getAnimeFor(season: season, vc: vc, currentPage: currentPage + 1)
                 } else {
                     DispatchQueue.main.async {
+                        print("Reloading Collection View")
                         vc.collectionView.reloadData()
                     }
                 }

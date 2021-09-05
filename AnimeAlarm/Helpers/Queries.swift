@@ -60,7 +60,7 @@ struct QueryHelper {
                         }
                     }
                 """
-        print("Query String that was built", str)
+        print("Built String: ", str)
         return str
     }
     
