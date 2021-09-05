@@ -25,7 +25,11 @@ class HomeController: UICollectionViewController, UIPopoverPresentationControlle
         collectionView.register(RowCellView.self, forCellWithReuseIdentifier: rowCellId)
         collectionView.register(NestedCollectionViewCell.self, forCellWithReuseIdentifier: nestedCellId)
 
-        navigationItem.title = "Winter 2021"
+        var title: String = SeasonsHelper.shared.currentSeason?.season ?? "Season"
+        title = title.capitalized
+        title = title + " " + String(SeasonsHelper.shared.currentSeason!.year)
+        navigationItem.title = title
+        
         navigationController?.navigationBar.isTranslucent = false
         //toggle nested collection view button
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(toggleAction))

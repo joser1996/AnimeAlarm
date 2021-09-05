@@ -36,6 +36,10 @@ class SeasonsPopoverController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let selectedSeason = SeasonsHelper.shared.seasons?[indexPath.item] {
+            var title: String = selectedSeason.season.capitalized
+            title = title + " " + String(selectedSeason.year)
+            print("New Title: ", title)
+            homeController?.navigationItem.title = title
             print("Selected Season: ", selectedSeason)
             AnimeClient.shared.clearData()
             AnimeClient.shared.getAnimeFor(season: selectedSeason, vc: homeController!, currentPage: 1)
