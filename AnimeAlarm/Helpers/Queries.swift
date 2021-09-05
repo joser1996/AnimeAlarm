@@ -13,6 +13,58 @@ struct Query {
 }
 
 struct QueryHelper {
+
+    func buildQueryString(season: String, year: String) -> String {
+        var str = """
+            query($page: Int, $perPage: Int) {
+                Page(page: $page, perPage: $perPage) {
+                    pageInfo {
+                        total
+                        currentPage
+                        lastPage
+                        hasNextPage
+                        perPage
+                    }
+            """
+        str = str + "media(season: \(season), seasonYear: \(year), type: ANIME) {"
+        
+        str = str + """
+                                id
+                                title {
+                                    romaji
+                                    native
+                                    english
+                                }
+                                nextAiringEpisode {
+                                    airingAt
+                                    episode
+                                }
+                                episodes
+                                description(asHtml: false)
+                                coverImage {
+                                    extraLarge
+                                    large
+                                    medium
+                                }
+                                endDate {
+                                    year
+                                    month
+                                    day
+                                }
+                                startDate {
+                                    year
+                                    month
+                                    day
+                                }
+                            }
+                        }
+                    }
+                """
+        print("Query String that was built", str)
+        return str
+    }
+    
+    
     var mainQueryString = """
         query($page: Int, $perPage: Int) {
             Page(page: $page, perPage: $perPage) {
@@ -58,8 +110,9 @@ struct QueryHelper {
     """
     var variables = ["page": 1, "perPage": 50]
     
-    func getQueryObj(currentPage: Int) -> Query{
+    func getQueryObj(currentPage: Int, season: Season) -> Query{
         let vars = ["page": currentPage, "perPage": 50]
-        return Query(request: mainQueryString, variables: vars)
+        
+        return Query(request: buildQueryString(season: season.season, year: String(season.year)), variables: vars)
     }
 }

@@ -28,8 +28,8 @@ class AnimeClient {
     }
      
     //returns JSON object that will be request
-    func createJSON(currentPage: Int) -> Data? {
-        let query = queryHelper.getQueryObj( currentPage: currentPage)
+    func createJSON(currentPage: Int, season: Season) -> Data? {
+        let query = queryHelper.getQueryObj(currentPage: currentPage, season: season)
         let animeReq = AnimeRequest(query: query.request, variables: query.variables)
         let encoder = JSONEncoder()
         let dataJSON = try? encoder.encode(animeReq)
@@ -37,9 +37,8 @@ class AnimeClient {
     }
     
     //sends request and gets data
-    func getAnimeFor(season: String, vc: HomeController, currentPage: Int) {
-        //creates request JSON obj that will be sent
-        guard let data = createJSON(currentPage: currentPage) else { return }
+    func getAnimeFor(season: Season, vc: HomeController, currentPage: Int) {
+        guard let data = createJSON(currentPage: currentPage, season: season) else { return }
         
         //creating post request
         var request = URLRequest(url: URL(string: self.baseURL)!)
@@ -69,13 +68,12 @@ class AnimeClient {
                     self.animeDataIndex?[item.id] = index
                 }
                 if notDone {
-                    self.getAnimeFor(season: "SUMMER", vc: vc, currentPage: currentPage + 1)
+                    self.getAnimeFor(season: season, vc: vc, currentPage: currentPage + 1)
                 } else {
                     DispatchQueue.main.async {
                         vc.collectionView.reloadData()
                     }
                 }
-
             } catch {
                 print("JSON Error: \(error.localizedDescription)")
             }

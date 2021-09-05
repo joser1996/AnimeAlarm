@@ -37,7 +37,7 @@ class HomeController: UICollectionViewController, UIPopoverPresentationControlle
         collectionView.delegate = self
         
         //Fetch the data
-        AnimeClient.shared.getAnimeFor(season: "WINTER", vc: self, currentPage: 1)
+        AnimeClient.shared.getAnimeFor(season: SeasonsHelper.shared.currentSeason!, vc: self, currentPage: 1)
 //        AnimeClient.shared.buildAiringToday(currentDate: Date())
         
 //      DBClient.shared.wipeDB()
@@ -67,6 +67,7 @@ class HomeController: UICollectionViewController, UIPopoverPresentationControlle
         popviewController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         
         self.present(popviewController, animated: true, completion: nil)
+        
     }
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
