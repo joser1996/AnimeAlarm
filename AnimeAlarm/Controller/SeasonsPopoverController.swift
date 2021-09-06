@@ -42,10 +42,28 @@ class SeasonsPopoverController: UITableViewController {
             homeController?.navigationItem.title = title
             print("Selected Season: ", selectedSeason)
             AnimeClient.shared.clearData()
-            AnimeClient.shared.getAnimeFor(season: selectedSeason, vc: homeController!, currentPage: 1)
+            AnimeClient.shared.getAnimeFor(season: selectedSeason, currentPage: 1) { animeData in
+                DispatchQueue.main.async {
+                    self.homeController?.collectionView.reloadData()
+                }
+            }
         }
         
         
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 }
+
+//AnimeClient.shared.getAnimeFor(season: currentSeason, currentPage: page) { animeData in
+//
+//    //checking to see if we got data
+//    if let animeData = animeData {
+//        for item in animeData {
+//            print("Item: ", item.title.romaji)
+//        }
+//    }
+//
+//    DispatchQueue.main.async {
+//        self.collectionView.reloadData()
+//    }
+//}

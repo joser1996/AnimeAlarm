@@ -43,15 +43,12 @@ class AnimeClient {
     }
     
     //sends request and gets data
-    func getAnimeFor(season: Season, vc: HomeController, currentPage: Int) {
+    func getAnimeFor(season: Season, currentPage: Int, completionBlock: @escaping ([MediaItem]?) -> Void) {
         guard let data = createJSON(currentPage: currentPage, season: season) else { return }
-        
-        //creating post request
         var request = URLRequest(url: URL(string: self.baseURL)!)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        //sending request
         URLSession.shared.uploadTask(with: request, from: data) { data, respone, error in
             if let error = error {
                 print("Error: \(error)")
@@ -67,19 +64,18 @@ class AnimeClient {
                 let result = try JSONDecoder().decode(ResponseFormat.self, from: data)
                 let mediaArray = result.data.Page.media
                 let notDone: Bool = result.data.Page.pageInfo.hasNextPage
-                print("notDone:  \(notDone)")
-                
+                //Saving Anime Data to class
                 for (index, item) in mediaArray.enumerated() {
                     self.animeData?.append(item)
                     self.animeDataIndex?[item.id] = index
                 }
                 if notDone {
-                    self.getAnimeFor(season: season, vc: vc, currentPage: currentPage + 1)
-                } else {
-                    DispatchQueue.main.async {
-                        print("Reloading Collection View")
-                        vc.collectionView.reloadData()
+                    //continue
+                    self.getAnimeFor(season: season, currentPage: currentPage + 1) { data in
+                        completionBlock(data)
                     }
+                } else {
+                    completionBlock(self.animeData)
                 }
             } catch {
                 print("JSON Error: \(error.localizedDescription)")

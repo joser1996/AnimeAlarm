@@ -40,8 +40,22 @@ class HomeController: UICollectionViewController, UIPopoverPresentationControlle
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.delegate = self
         
-        //Fetch the data
-        AnimeClient.shared.getAnimeFor(season: SeasonsHelper.shared.currentSeason!, vc: self, currentPage: 1)
+        //Fetch all the data
+        let page = 1
+        let currentSeason: Season = SeasonsHelper.shared.currentSeason!
+        AnimeClient.shared.getAnimeFor(season: currentSeason, currentPage: page) { animeData in
+            print("In here")
+            //checking to see if we got data
+            if let animeData = animeData {
+                for item in animeData {
+                    print("Item: ", item.title.romaji)
+                }
+            }
+            
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }
 //        AnimeClient.shared.buildAiringToday(currentDate: Date())
         
 //      DBClient.shared.wipeDB()
