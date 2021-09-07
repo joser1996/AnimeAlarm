@@ -43,22 +43,12 @@ class HomeController: UICollectionViewController, UIPopoverPresentationControlle
         //Fetch all the data
         let page = 1
         let currentSeason: Season = SeasonsHelper.shared.currentSeason!
-        AnimeClient.shared.getAnimeFor(season: currentSeason, currentPage: page) { animeData in
-            print("In here")
-            //checking to see if we got data
-            if let animeData = animeData {
-                for item in animeData {
-                    print("Item: ", item.title.romaji)
-                }
-            }
-            
+        AnimeClient.shared.getAnimeFor(season: currentSeason, currentPage: page) { _ in
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
         }
-//        AnimeClient.shared.buildAiringToday(currentDate: Date())
-        
-//      DBClient.shared.wipeDB()
+                
         //This should be in app deleage to ensure you don't miss any notifications
         UNUserNotificationCenter.current().delegate = self
         self.cleanAlarmView()

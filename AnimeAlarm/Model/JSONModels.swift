@@ -16,14 +16,14 @@ struct ResponseData: Decodable {
 }
 
 struct PageData: Decodable {
-    let pageInfo: PageInfo
+    let pageInfo: PageInfo?
     let media: [MediaItem]
 }
 
 struct PageInfo: Decodable {
     let total: Int
     let currentPage: Int
-    let lastPage: Int
+    let lastPage: Int?
     let hasNextPage: Bool
     let perPage: Int
 }
@@ -31,12 +31,28 @@ struct PageInfo: Decodable {
 struct MediaItem: Decodable {
     let id: Int
     let title: Title
+    let airingSchedule: Schedule?
     let nextAiringEpisode: NextAiring?
     let episodes: Int?
     let description: String?
     let coverImage: CoverImage
     let endDate: AnimeDate
     let startDate: AnimeDate
+}
+
+struct Schedule: Decodable {
+    let pageInfo: PageInfo
+    let edges: [Node]
+}
+
+struct Node: Decodable {
+    let node: NodeData
+}
+
+struct NodeData: Decodable {
+    let id: Int?
+    let airingAt: Double
+    let episode: Int
 }
 
 struct Title: Decodable {
