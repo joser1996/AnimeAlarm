@@ -19,6 +19,8 @@ class AnimeClient {
     var animeDataIndex: [Int: Int]? = [:]
     var airingToday: [MediaItem]? = []
     
+    // dictionary key is media id and [Node] has schedule data
+    var airingSchedule: [Int: [Node]]
     var todaysDate: Date
     
     //MARK: Methods
@@ -26,6 +28,7 @@ class AnimeClient {
         print("Do Nothing")
         //get todays date
         self.todaysDate = Date()
+        airingSchedule = [:]
     }
      
     func clearData() {
@@ -42,39 +45,17 @@ class AnimeClient {
         return dataJSON
     }
     
-    func getAnimeAiringSchedule(season: Season) {
-        let query = queryHelper.airingScheduleQuery(season: season)
-        let animeRequest = AnimeRequest(query: query.request, variables: query.variables)
-        let encoder = JSONEncoder()
-        guard let dataJSON = try? encoder.encode(animeRequest) else {return}
-        
-        var request = URLRequest(url: URL(string: self.baseURL)!)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        URLSession.shared.uploadTask(with: request, from: dataJSON) { data, response, error in
-            if let error = error {
-                print("Error: \(error)")
-                return
+    func buildAiringSchedule() {
+        guard let animeData = self.animeData else { return }
+        for item in animeData {
+            var nodes: [Node] = []
+            if let edges = item.airingSchedule?.edges {
+                for node in edges {
+                    nodes.append(node)
+                }
             }
-            
-            guard let data = data else {
-                print("Data is nil")
-                return
-            }
-            
-            do {
-                let responseData = String(data: data, encoding: String.Encoding.utf8)
-                print("Raw: ", responseData)
-                
-                
-                let result = try JSONDecoder().decode(ResponseFormat.self, from: data)
-                print("Result: ", result)
-            } catch {
-                print("Something went wrong.")
-                print(error)
-            }
-        }.resume()
-        
+            self.airingSchedule[item.id] = nodes
+        }
     }
     
     //sends request and gets data
@@ -100,14 +81,6 @@ class AnimeClient {
                 let notDone: Bool = result.data.Page.pageInfo!.hasNextPage
                 //Saving Anime Data to class
                 for (index, item) in mediaArray.enumerated() {
-                    print("Name: ", item.title.romaji)
-                    if let edges = item.airingSchedule?.edges {
-                        print("Schedule: ")
-                        for node in edges {
-                            print("Episode: \(node.node.episode) Airing at: ", node.node.airingAt)
-                            
-                        }
-                    }
                     self.animeData?.append(item)
                     self.animeDataIndex?[item.id] = index
                 }
@@ -135,17 +108,33 @@ class AnimeClient {
     }
     
 
-    
-    func buildAiringToday(currentDate: Date) {
-        guard let animeData = self.animeData else {return}
-        let calander = Calendar.current
-        let today = calander.component(.day, from: currentDate)
-        for item in animeData {
-            if let airingAt = item.nextAiringEpisode?.airingAt {
-                let airingDate = Alarm.airingDay(seconds: airingAt)
-                let airingDay = calander.component(.day, from: airingDate)
-                if airingDay == today {
-                    self.airingToday?.append(item)
+    func buildAiringToday() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        print("TODAY: \(dateFormatter.string(from: Date()))")
+        let todayString = dateFormatter.string(from: Date())
+        for (key, nodes) in self.airingSchedule {
+            guard let table = animeDataIndex else {
+                print("NO INDEX")
+                return
+            }
+            
+            guard let index = table[key] else {
+                print ("WAS NOT ABLE TO FIND INDEX")
+                return
+            }
+            guard let animeData = self.animeData else {
+                print("NO ANIME DATA")
+                return
+            }
+            let mediaItem = animeData[index]
+            //print("PROCESSING TITLE: \(mediaItem.title.romaji ?? "NO TITLE")")
+            for node in nodes {
+                let airingDate = Alarm.airingDay(seconds: node.node.airingAt)
+                let airingString = dateFormatter.string(from: airingDate)
+                if airingString == todayString {
+                    print(" \(mediaItem.title.romaji ?? "N/A") episode: \(node.node.episode) is airing today")
+                    self.airingToday?.append(mediaItem)
                 }
             }
         }

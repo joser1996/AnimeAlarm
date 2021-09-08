@@ -44,11 +44,13 @@ class HomeController: UICollectionViewController, UIPopoverPresentationControlle
         let page = 1
         let currentSeason: Season = SeasonsHelper.shared.currentSeason!
         AnimeClient.shared.getAnimeFor(season: currentSeason, currentPage: page) { _ in
+            AnimeClient.shared.buildAiringSchedule()
+            AnimeClient.shared.buildAiringToday()
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
         }
-                
+        
         //This should be in app deleage to ensure you don't miss any notifications
         UNUserNotificationCenter.current().delegate = self
         self.cleanAlarmView()
@@ -60,7 +62,7 @@ class HomeController: UICollectionViewController, UIPopoverPresentationControlle
         print("Toggling View")
         self.refNestedCell?.isShowingAlarms.toggle()
         if AnimeClient.shared.airingToday?.count == 0 {
-            AnimeClient.shared.buildAiringToday(currentDate: Date())
+            AnimeClient.shared.buildAiringToday()
         }
         self.refNestedCell?.refreshCollectionView()
     }
