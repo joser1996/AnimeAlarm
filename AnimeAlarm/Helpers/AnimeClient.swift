@@ -133,6 +133,7 @@ class AnimeClient {
                 let airingDate = Alarm.airingDay(seconds: node.node.airingAt)
                 let airingString = dateFormatter.string(from: airingDate)
                 if airingString == todayString {
+                    print(" Airing Date: \(airingString)")
                     print(" \(mediaItem.title.romaji ?? "N/A") episode: \(node.node.episode) is airing today")
                     self.airingToday?.append(mediaItem)
                 }

@@ -40,7 +40,7 @@ class NestedCellView: BaseCellView {
     
     var myFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.timeStyle = .short
+//        formatter.timeStyle = .short
         formatter.dateStyle = .short
         return formatter
     }()

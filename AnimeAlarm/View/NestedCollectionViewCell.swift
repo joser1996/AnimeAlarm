@@ -87,8 +87,7 @@ class NestedCollectionViewCell: BaseCellView {
         guard let airingToday = AnimeClient.shared.airingToday else {return}
         var tempArray: [NestedCellData] = []
         for episode in airingToday {
-            let airingDate = Alarm.airingDay(seconds: episode.nextAiringEpisode?.airingAt ?? 0)
-            let cellData = NestedCellData(title: episode.title.romaji ?? "N/A", imageURL: episode.coverImage.large ?? "", date: airingDate)
+            let cellData = NestedCellData(title: episode.title.romaji ?? "N/A", imageURL: episode.coverImage.large ?? "", date: Date())
             tempArray.append(cellData)
         }
         self.dataSource = tempArray
