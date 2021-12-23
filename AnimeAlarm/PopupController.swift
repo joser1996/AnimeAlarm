@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+ 
 class PopupController: UIViewController {
     
     //MARK: Properties
@@ -22,9 +22,9 @@ class PopupController: UIViewController {
     
     private func setUpPopUpView() {
         popupView.saveButton.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
-        popupView.defautlButton.addTarget(self, action: #selector(defaultAction), for: .touchUpInside)
         popupView.cancelButton.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
-        popupView.textField.setUpDatePicker(target: self, selector: #selector(doneAction))
+       // popupView.textField.setUpDatePicker(target: self, selector: #selector(doneAction))
+        popupView.textField.setUpNewDatePicker(target: self, selector: #selector(doneAction))
         view.addSubview(popupView)
 
         popupView.backgroundColor = .systemGroupedBackground
@@ -122,6 +122,21 @@ class PopupController: UIViewController {
 
 
 extension UITextField {
+    
+    
+    func setUpNewDatePicker(target: Any, selector: Selector) {
+        let screenWidth = UIScreen.main.bounds.width
+        let datePicker = CustomDatePickerView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 215))
+        
+        self.inputView = datePicker
+        let toolBar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: 44.0))
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: nil, action: #selector(tapCancel))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: target, action: selector)
+        toolBar.setItems([cancelButton, flexSpace, doneButton], animated: false)
+        self.inputAccessoryView = toolBar
+    }
+    
     func setUpDatePicker(target: Any, selector: Selector) {
         //create datepicker obj
         let screenWidth = UIScreen.main.bounds.width

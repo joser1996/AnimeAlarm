@@ -27,16 +27,7 @@ class CreateAlarmView: UIView {
         tf.placeholder = "Default: 30 mins before airing time"
         return tf
     }()
-    //default button
-    let defautlButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Default", for: .normal)
-        button.layer.borderColor = #colorLiteral(red: 0.2935330146, green: 0.2960240472, blue: 0.2658583929, alpha: 1)
-        button.layer.borderWidth = 1.0
-        button.layer.cornerRadius = 10
-        return button
-    }()
+
     //save
     let saveButton: UIButton = {
         let button = UIButton()
@@ -72,7 +63,6 @@ class CreateAlarmView: UIView {
         self.addSubview(title)
         self.addSubview(textField)
         self.addSubview(saveButton)
-        self.addSubview(defautlButton)
         self.addSubview(cancelButton)
         
         //MARK: Constraints
@@ -94,16 +84,10 @@ class CreateAlarmView: UIView {
             saveButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 30),
             saveButton.widthAnchor.constraint(equalToConstant: 100)
         ])
-        //defaultButton
-        NSLayoutConstraint.activate([
-            defautlButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            defautlButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 8),
-            defautlButton.widthAnchor.constraint(equalToConstant: 100)
-        ])
         //saveButton
         NSLayoutConstraint.activate([
             cancelButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            cancelButton.topAnchor.constraint(equalTo: defautlButton.bottomAnchor, constant: 8),
+            cancelButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 8),
             cancelButton.widthAnchor.constraint(equalToConstant: 100)
 
         ])
