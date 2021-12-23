@@ -55,27 +55,11 @@ class CustomDatePickerView: UIPickerView {
         }
     }
     
-    func getDay(forString day: String) -> Day{
-        switch day {
-        case "Mon.":
-            return Day.Monday
-        case "Tue.":
-            return Day.Tuesday
-        case "Wed.":
-            return Day.Wednesday
-        case "Thu.":
-            return Day.Thursday
-        case "Fri.":
-            return Day.Friday
-        case "Sat.":
-            return Day.Saturday
-        case "Sun.":
-            return Day.Sunday
-        default:
-            return Day.Sunday
-        }
-    }
-    
+    //MARK: Style Stuff
+    var selectedTextColor: UIColor?
+    var textColor: UIColor?
+    var selectedFont: UIFont?
+    var textFont: UIFont?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -95,6 +79,40 @@ class CustomDatePickerView: UIPickerView {
     func setUp() {
         self.delegate = self
         self.dataSource = self
+        self.selectedTextColor = .blue
+        self.textColor = .black
+        self.selectedFont = .boldSystemFont(ofSize: 17)
+        self.textFont = .boldSystemFont(ofSize: 17)
+    }
+    
+    func labelForComponent(component: NSInteger) -> UILabel {
+        let frame = CGRect(x: 0.0, y: 0.0, width: bounds.size.width, height: CGFloat(rowHeight))
+        let label = UILabel(frame: frame)
+        label.textAlignment = .center
+        label.backgroundColor = .clear
+        label.isUserInteractionEnabled = false
+        return label
+    }
+    
+    func getDay(forString day: String) -> Day{
+        switch day {
+        case "Mon.":
+            return Day.Monday
+        case "Tue.":
+            return Day.Tuesday
+        case "Wed.":
+            return Day.Wednesday
+        case "Thu.":
+            return Day.Thursday
+        case "Fri.":
+            return Day.Friday
+        case "Sat.":
+            return Day.Saturday
+        case "Sun.":
+            return Day.Sunday
+        default:
+            return Day.Sunday
+        }
     }
     
     
@@ -135,8 +153,9 @@ extension CustomDatePickerView: UIPickerViewDelegate, UIPickerViewDataSource {
             title = ampm[row]
         }
         
-        let returnView: UILabel = UILabel()
+        let returnView: UILabel = labelForComponent(component: component)
         returnView.text = title
+        returnView.font = self.textFont
         
         return returnView
     }
