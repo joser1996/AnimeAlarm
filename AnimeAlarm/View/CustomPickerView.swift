@@ -5,8 +5,26 @@
 //  Created by Jose Torres-Vargas on 12/23/21.
 //
 
+//TODO: Set behavior for when selected
+//TODO: Set to start at current day and time
+
 import Foundation
 import UIKit
+enum Day: Int {
+    case Monday = 0
+    case Tuesday = 1
+    case Wednesday = 2
+    case Thursday = 3
+    case Friday = 4
+    case Saturday = 5
+    case Sunday = 6
+}
+struct AlarmDate {
+    let dayWeek: Day
+    let hour: Int
+    let min: Int
+    let am: Bool
+}
 
 class CustomDatePickerView: UIPickerView {
     enum Component: Int {
@@ -24,6 +42,41 @@ class CustomDatePickerView: UIPickerView {
     let ampm = ["AM", "PM"]
     let rowHeight: NSInteger = 44
 
+    //Will be returned in user's current TimeZone setting
+    var date: AlarmDate {
+        get {
+            //Get selectetd day
+            let selectedDay = self.days[selectedRow(inComponent: Component.Day.rawValue)]
+            let day = getDay(forString: selectedDay)
+            let hour  = self.hours[selectedRow(inComponent: Component.Hour.rawValue)]
+            let min = self.minutes[selectedRow(inComponent: Component.Minute.rawValue)]
+            let am = self.ampm[selectedRow(inComponent: Component.AMPM.rawValue)]
+            return AlarmDate(dayWeek: day, hour: Int(hour)!, min: Int(min)!, am: (am == "AM"))
+        }
+    }
+    
+    func getDay(forString day: String) -> Day{
+        switch day {
+        case "Mon.":
+            return Day.Monday
+        case "Tue.":
+            return Day.Tuesday
+        case "Wed.":
+            return Day.Wednesday
+        case "Thu.":
+            return Day.Thursday
+        case "Fri.":
+            return Day.Friday
+        case "Sat.":
+            return Day.Saturday
+        case "Sun.":
+            return Day.Sunday
+        default:
+            return Day.Sunday
+        }
+    }
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         for index in 1...12 {

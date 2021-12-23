@@ -13,6 +13,8 @@ class PopupController: UIViewController {
     private let popupView = CreateAlarmView()
     var selectedDate: Date?
     var animeData: MediaItem?
+    var newSelectedDate: AlarmDate?
+    
     
     //MARK: Methods
     override func viewDidLoad() {
@@ -40,13 +42,19 @@ class PopupController: UIViewController {
     }
     //set the selected date
     @objc private func doneAction() {
-        if let datePicker = self.popupView.textField.inputView as? UIDatePicker {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .medium
-            dateFormatter.timeStyle = .short
-            print("Date: \(dateFormatter.string(from: datePicker.date))")
-            self.popupView.textField.text = dateFormatter.string(from: datePicker.date)
-            self.selectedDate = datePicker.date
+        if let datePicker = self.popupView.textField.inputView as? CustomDatePickerView {
+//            let dateFormatter = DateFormatter()
+//            dateFormatter.dateStyle = .medium
+//            dateFormatter.timeStyle = .short
+            let alarmDate: AlarmDate = datePicker.date
+            let ampm: String = alarmDate.am ? "AM" : "PM"
+            let dateString = "Day:\(alarmDate.dayWeek), \(alarmDate.hour):\(alarmDate.min)\(ampm)"
+            print("Alarm Date: \(dateString)")
+            //print("Date: \(dateFormatter.string(from: datePicker.date))")
+            
+            self.popupView.textField.text = dateString
+            //self.selectedDate = datePicker.date
+            self.newSelectedDate = alarmDate
         }
         self.popupView.textField.resignFirstResponder()
     }
