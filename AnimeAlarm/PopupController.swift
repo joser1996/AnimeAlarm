@@ -59,7 +59,7 @@ class PopupController: UIViewController {
         guard let label = animeData.title.romaji else {return}
         
         if let selectedDate = self.selectedDate {
-            let alarm = Alarm(on: selectedDate, for: label, with: animeData.id, isActive: true)
+            let alarm = Alarm(on: selectedDate, for: label, with: animeData.id, isActive: false)
             //writing alarm sets the alarm.alarmID property
             DBClient.shared.writeAlarm(alarm: alarm)
             

@@ -58,7 +58,7 @@ class NestedCollectionViewCell: BaseCellView {
             changeDataSourceToAlarm()
         } else {
             changeDataSourceToAiringToday()
-            self.dataSource = self.dataSource?.sorted(by: {$0.date! < $1.date!})
+            self.dataSource = self.dataSource?.sorted(by: {$0.today! < $1.today!})
         }
         DispatchQueue.main.async {
             self.collectionView.reloadData()
