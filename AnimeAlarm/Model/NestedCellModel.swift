@@ -11,5 +11,6 @@ import Foundation
 struct NestedCellData {
     let title: String
     let imageURL: String
-    let date: Date
+    let date: AlarmDate?
+    let today: Date?
 }

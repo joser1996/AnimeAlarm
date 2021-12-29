@@ -5,26 +5,62 @@
 //  Created by Jose Torres-Vargas on 12/23/21.
 //
 
-//TODO: Set behavior for when selected
-//TODO: Set to start at current day and time
-
 import Foundation
 import UIKit
-enum Day: Int {
-    case Monday = 0
-    case Tuesday = 1
-    case Wednesday = 2
-    case Thursday = 3
-    case Friday = 4
-    case Saturday = 5
-    case Sunday = 6
+import GRDB
+enum Day: Int, CustomStringConvertible {
+    case Sunday = 1
+    case Monday = 2
+    case Tuesday = 3
+    case Wednesday = 4
+    case Thursday = 5
+    case Friday = 6
+    case Saturday = 7
+    
+    
+    var description: String {
+        switch self {
+        case .Monday: return "Monday"
+        case .Tuesday: return "Tuesday"
+        case .Wednesday: return "Wednesday"
+        case .Thursday: return "Thursday"
+        case .Friday: return "Friday"
+        case .Saturday: return "Saturday"
+        case .Sunday: return "Sunday"
+        }
+    }
 }
+
 struct AlarmDate {
     let dayWeek: Day
     let hour: Int
     let min: Int
     let am: Bool
 }
+
+extension AlarmDate: Comparable, CustomStringConvertible {
+    static func < (lhs: AlarmDate, rhs: AlarmDate) -> Bool {
+        let lHour = lhs.am ? lhs.hour : lhs.hour + 12
+        let rHour = rhs.am ? rhs.hour : rhs.hour + 12
+        if lhs.dayWeek != lhs.dayWeek {
+            return lhs.dayWeek.rawValue < rhs.dayWeek.rawValue
+        } else if (lHour != rHour) {
+            return lHour < rHour
+        } else {
+            return lhs.min < rhs.min
+        }
+    }
+    
+    var description: String {
+        let hourStr = String(self.hour)
+        let minStr = self.min < 10 ? "0\(String(self.min))": String(self.min)
+        let amStr = self.am ? "AM" : "PM"
+        let str: String = "\(self.dayWeek)@ \(hourStr):\(minStr) \(amStr)"
+        return str
+    }
+    
+}
+
 
 class CustomDatePickerView: UIPickerView {
     enum Component: Int {

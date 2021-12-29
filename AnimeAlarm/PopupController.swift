@@ -11,7 +11,7 @@ class PopupController: UIViewController {
     
     //MARK: Properties
     private let popupView = CreateAlarmView()
-    var selectedDate: Date?
+    var selectedDate: AlarmDate?
     var animeData: MediaItem?
     var newSelectedDate: AlarmDate?
     
@@ -25,7 +25,6 @@ class PopupController: UIViewController {
     private func setUpPopUpView() {
         popupView.saveButton.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
         popupView.cancelButton.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
-       // popupView.textField.setUpDatePicker(target: self, selector: #selector(doneAction))
         popupView.textField.setUpNewDatePicker(target: self, selector: #selector(doneAction))
         view.addSubview(popupView)
 
@@ -43,18 +42,11 @@ class PopupController: UIViewController {
     //set the selected date
     @objc private func doneAction() {
         if let datePicker = self.popupView.textField.inputView as? CustomDatePickerView {
-//            let dateFormatter = DateFormatter()
-//            dateFormatter.dateStyle = .medium
-//            dateFormatter.timeStyle = .short
             let alarmDate: AlarmDate = datePicker.date
             let ampm: String = alarmDate.am ? "AM" : "PM"
             let dateString = "Day:\(alarmDate.dayWeek), \(alarmDate.hour):\(alarmDate.min)\(ampm)"
-            print("Alarm Date: \(dateString)")
-            //print("Date: \(dateFormatter.string(from: datePicker.date))")
-            
             self.popupView.textField.text = dateString
-            //self.selectedDate = datePicker.date
-            self.newSelectedDate = alarmDate
+            self.selectedDate = alarmDate
         }
         self.popupView.textField.resignFirstResponder()
     }
@@ -65,17 +57,11 @@ class PopupController: UIViewController {
             return
         }
         guard let label = animeData.title.romaji else {return}
-        guard let airingAt = animeData.nextAiringEpisode?.airingAt else {return}
-        let airingDate = Alarm.airingDay(seconds: airingAt)
         
         if let selectedDate = self.selectedDate {
-            //create alarm object
-            let alarm = Alarm(on: selectedDate, for: label, with: animeData.id, isActive: false)
-            alarm.airingDate = airingDate
-
+            let alarm = Alarm(on: selectedDate, for: label, with: animeData.id, isActive: true)
             //writing alarm sets the alarm.alarmID property
-            DBClient.shared.writeAlarm(alarm: alarm, airingDate: airingDate)
-
+            DBClient.shared.writeAlarm(alarm: alarm)
             
             let localNotifications = LocalNotifications()
             localNotifications.createNotificationRequestUsingAlarm(alarm: alarm)
@@ -85,38 +71,7 @@ class PopupController: UIViewController {
         dismissView()
     }
     
-    @objc private func defaultAction() {
-        print("Default Action!")
-        guard let animeData = self.animeData else {
-            print("No anime data passed")
-            return
-        }
-        guard let label = animeData.title.romaji else { return }
-        if let airingTime = animeData.nextAiringEpisode?.airingAt {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .medium
-            dateFormatter.timeStyle = .medium
-            let airingDate = Alarm.airingDay(seconds: airingTime)
-            print("Airing at: \(dateFormatter.string(from: airingDate))")
-            guard let alarmDate = Calendar.current.date(byAdding: .minute, value: -30, to: airingDate) else {return}
-            //TODO: Make sure alarm data hasn't passed already
-            print("Alarm Date: \(dateFormatter.string(from: alarmDate))")
-            let alarm = Alarm(on: alarmDate, for: label, with: animeData.id, isActive: false)
-            
-            //make sure that alarm is valid before writing
-            DBClient.shared.writeAlarm(alarm: alarm, airingDate: airingDate)
-            
-            //activate alarm
-            
-            
-        } else {
-            //should not be here button should be disabled if no next airing episode
-            print("No next episode")
-            return
-        }
-        dismissView()
-    }
-    
+
     @objc private func cancelAction() {
         print("Cancel Action")
         dismissView()
@@ -141,30 +96,6 @@ extension UITextField {
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: nil, action: #selector(tapCancel))
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: target, action: selector)
-        toolBar.setItems([cancelButton, flexSpace, doneButton], animated: false)
-        self.inputAccessoryView = toolBar
-    }
-    
-    func setUpDatePicker(target: Any, selector: Selector) {
-        //create datepicker obj
-        let screenWidth = UIScreen.main.bounds.width
-        let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 215))
-        datePicker.datePickerMode = .dateAndTime
-        datePicker.minimumDate = Date()
-        //for ios14
-        if #available(iOS 14, *) {
-            datePicker.preferredDatePickerStyle = .wheels
-            datePicker.sizeToFit()
-        }
-        self.inputView = datePicker
-        //create a toolbar
-        let toolBar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: 44.0))
-        //createbuttons
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: nil, action: #selector(tapCancel))
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: target, action: selector)
-        
-        //assign buttons to toolbar
         toolBar.setItems([cancelButton, flexSpace, doneButton], animated: false)
         self.inputAccessoryView = toolBar
     }

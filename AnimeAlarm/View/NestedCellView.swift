@@ -61,7 +61,12 @@ class NestedCellView: BaseCellView {
             //set the title
             title.text = cellData!.title
             //set the date
-            alarmLabel.text = myFormatter.string(from: cellData!.date)
+            if let d = cellData?.today {
+                alarmLabel.text = myFormatter.string(from: d)
+            } else {
+                let alarmDate = cellData?.date
+                alarmLabel.text = "\(alarmDate!)"
+            }
         }
     }
     

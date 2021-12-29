@@ -23,7 +23,7 @@ class AnimeInfoController: UIViewController {
             
             if airingAt != nil {
                 let nextDate = Alarm.airingDay(seconds: airingAt!)
-                let formatter = DateFormatter()
+                let formatter = DateFormatter() 
                 formatter.timeStyle = .short
                 formatter.dateStyle = .short
                 nextDateString += formatter.string(from: nextDate)

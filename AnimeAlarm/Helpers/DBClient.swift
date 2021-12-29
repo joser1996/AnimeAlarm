@@ -11,6 +11,7 @@ import GRDB
 class DBClient {
     //MARK: Properties
     let path: String
+    let tableName: String = "anime_alarms"
     var connection: DatabaseQueue?
     static let shared = DBClient()
     
@@ -20,27 +21,29 @@ class DBClient {
         self.path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
         self.connectToDB()
     }
-    
+        
     private func createTable(dbQueue: DatabaseQueue) {
-        //create table if necessary
         do {
             try dbQueue.write { db in
                 try db.execute(sql: """
-                    CREATE TABLE alarms (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    anime_id INTEGER NOT NULL,
-                    anime_title TEXT NOT NULL,
-                    alarm_date_time TEXT NOT NULL,
-                    airing_date_time TEXT NOT NULL,
-                    isActive INTEGER NOT NULL
-                    )
-                    """)
+                CREATE TABLE \(tableName) (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                anime_id INTEGER NOT NULL,
+                anime_title TEXT NOT NULL,
+                isActive INTEGER NOT NULL,
+                isAM INTEGER NOT NULL,
+                day INTEGER NOT NULL,
+                hour INTEGER NOT NULL,
+                min INTEGER NOT NULL
+                )
+                """)
             }
         } catch {
-            print("Failed to create Table")
-            print("Error: \(error.localizedDescription)")
+            print("Faild to create Table")
+            print("Error: \(error)")
         }
     }
+    
     
     private func connectToDB() {
         do{
@@ -48,7 +51,7 @@ class DBClient {
             
             //check to see if table exist
             let isCreated =  try dbQueue.read {db in
-                try db.tableExists("alarms")
+                try db.tableExists(tableName)
             }
             //create table if not
             if(!isCreated) {
@@ -60,29 +63,33 @@ class DBClient {
             print("Error: \(error.localizedDescription)")
         }
     }
+ 
     
     //write to db
-    func writeAlarm(alarm: Alarm, airingDate: Date) {
+    func writeAlarm(alarm: Alarm) {
         let animeID = alarm.animeID
         let animeTitle = alarm.label
-        let alarmDate = alarm.alertDate
-
+        let alarmDate = alarm.alarmDate
+        
         guard let doesExist = doesAlarmExist(animeID: animeID) else {
-            print("Does exist failed")
+            print("doesAlarmExist failed")
+            return
+        }
+        if doesExist {
+            print("Alarm already exists. Not Writing again for now")
             return
         }
         
-        if doesExist {
-            print("Alarm already exists. Not Writing again")
-            return
-        }
+        //TODO: Check if alarm is active
+        //TODO: Sort alarms
+        //TODO: Switching b/w alarms and airing today
         
         guard let dbQueue = self.connection else {return}
         do {
             try dbQueue.write { db in
                 try db.execute(
-                    sql: "INSERT INTO alarms (anime_id, anime_title, alarm_date_time, airing_date_time, isActive) VALUES(?, ?, ?, ?, ?)",
-                    arguments: [animeID, animeTitle, alarmDate, airingDate, alarm.active]
+                    sql: "INSERT INTO \(tableName) (anime_id, anime_title, isActive, isAM, day, hour, min) VALUES(?, ?, ?, ?, ?, ?, ?)",
+                    arguments: [animeID, animeTitle, alarm.active, alarmDate.am, alarmDate.dayWeek.rawValue, alarmDate.hour, alarmDate.min]
                 )
                 let rowId = db.lastInsertedRowID
                 alarm.alarmID = Int(exactly: rowId) ?? -1
@@ -120,13 +127,16 @@ class DBClient {
             let alarmID: Int = row["id"]
             let animeID: Int = row["anime_id"]
             let animeTitle: String = row["anime_title"]
-            let alarmDate: Date = row["alarm_date_time"]
-            let airingDate: Date = row["airing_date_time"]
             let isActive: Bool = row["isActive"]
+            let isAM: Bool = row["isAM"]
+            let day: Int = row["day"]
+            let hour: Int = row["hour"]
+            let min: Int = row["min"]
             
+            //Create alarmDate: AlarmDate
+            let alarmDate: AlarmDate = AlarmDate(dayWeek: Day(rawValue: day)!, hour: hour, min: min, am: isAM)
             let alarm = Alarm(on: alarmDate, for: animeTitle, with: animeID, isActive: isActive)
             alarm.alarmID = alarmID
-            alarm.airingDate = airingDate
             alarms.append(alarm)
         }
         return alarms
@@ -138,7 +148,7 @@ class DBClient {
         var ret: [Alarm]? = nil
         do {
             try dbQueue.read { db in
-                let rows = try Row.fetchAll(db, sql: "SELECT * FROM alarms")
+                let rows = try Row.fetchAll(db, sql: "SELECT * FROM \(tableName)")
                 let alarms = buildAlarms(rows: rows)
                 ret = alarms
             }

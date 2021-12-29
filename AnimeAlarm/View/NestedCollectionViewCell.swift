@@ -49,7 +49,7 @@ class NestedCollectionViewCell: BaseCellView {
             print("In loadAlarms():: Wasn't able to load alarms")
             return nil
         }
-        return alarmsArr.sorted(by: {$0.alertDate < $1.alertDate})
+        return alarmsArr //sort later by date
     }
     
     //reloads the nested collection view
@@ -58,7 +58,7 @@ class NestedCollectionViewCell: BaseCellView {
             changeDataSourceToAlarm()
         } else {
             changeDataSourceToAiringToday()
-            self.dataSource = self.dataSource?.sorted(by: {$0.date < $1.date})
+            self.dataSource = self.dataSource?.sorted(by: {$0.date! < $1.date!})
         }
         DispatchQueue.main.async {
             self.collectionView.reloadData()
@@ -77,7 +77,7 @@ class NestedCollectionViewCell: BaseCellView {
                 let media = AnimeClient.shared.animeData?[dataIndex!]
                 imageURL = media?.coverImage.large ?? ""
             }
-            let cellData = NestedCellData(title: alarm.label, imageURL:imageURL, date: alarm.alertDate)
+            let cellData = NestedCellData(title: alarm.label, imageURL:imageURL, date: alarm.alarmDate, today: nil)
             tempArray.append(cellData)
         }
         self.dataSource = tempArray
@@ -87,7 +87,7 @@ class NestedCollectionViewCell: BaseCellView {
         guard let airingToday = AnimeClient.shared.airingToday else {return}
         var tempArray: [NestedCellData] = []
         for episode in airingToday {
-            let cellData = NestedCellData(title: episode.title.romaji ?? "N/A", imageURL: episode.coverImage.large ?? "", date: Date())
+            let cellData = NestedCellData(title: episode.title.romaji ?? "N/A", imageURL: episode.coverImage.large ?? "", date: nil, today: Date())
             tempArray.append(cellData)
         }
         self.dataSource = tempArray

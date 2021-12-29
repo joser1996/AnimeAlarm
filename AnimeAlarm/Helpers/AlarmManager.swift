@@ -14,22 +14,8 @@ class AlarmManager {
     var alarms: [Int: Alarm]
     
     init() {
-        //load alarms if any exist
-        
-        //otherwise create a new dictionary
+        //load alarms if any exist; otherwise create a new dictionary
         self.alarms = [:]
-    }
-    
-    private func loadAlarms() {
-        
-    }
-    
-    func addAlarm(for anime: MediaItem) {
-        let nextEp = anime.nextAiringEpisode?.airingAt ?? 0 //if next airing not available ask user to specify time
-        let airingDate = Alarm.airingDay(seconds: nextEp)
-        let title = anime.title.romaji ?? "No Title"
-        let alarm: Alarm = Alarm(on: airingDate, for: title, with: anime.id, isActive: false)
-        self.alarms[anime.id] = alarm
     }
     
     func removeAlarm(for id: Int) {
@@ -41,12 +27,11 @@ class AlarmManager {
     func printAlarms() {
         for (_, alarm) in self.alarms {
             print("Label: \(alarm.label)")
-            print("Date: \(alarm.alertDate)")
+            print("Date: \(alarm.alarmDate)")
         }
     }
     
     func loadAlarms() -> [Int: Alarm] {
-        
         return [:]
     }
     
