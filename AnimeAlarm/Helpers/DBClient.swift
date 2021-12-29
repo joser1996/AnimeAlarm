@@ -80,7 +80,6 @@ class DBClient {
             return
         }
         
-        //TODO: Check if alarm is active
         //TODO: Sort alarms
         //TODO: Switching b/w alarms and airing today
         

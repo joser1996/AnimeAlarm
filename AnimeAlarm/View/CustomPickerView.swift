@@ -184,7 +184,8 @@ extension CustomDatePickerView: UIPickerViewDelegate, UIPickerViewDataSource {
         } else if (component == Component.Hour.rawValue) {
             title = hours[row]
         } else if (component == Component.Minute.rawValue) {
-            title = minutes[row]
+            let min = Int(minutes[row]) ?? 10
+            title = min < 10 ? "0\(minutes[row])" : minutes[row]
         } else {
             title = ampm[row]
         }

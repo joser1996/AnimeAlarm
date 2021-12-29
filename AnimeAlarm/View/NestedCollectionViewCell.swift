@@ -49,7 +49,7 @@ class NestedCollectionViewCell: BaseCellView {
             print("In loadAlarms():: Wasn't able to load alarms")
             return nil
         }
-        return alarmsArr //sort later by date
+        return alarmsArr.sorted(by: {$0.alarmDate < $1.alarmDate})
     }
     
     //reloads the nested collection view

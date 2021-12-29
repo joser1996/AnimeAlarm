@@ -43,9 +43,7 @@ class PopupController: UIViewController {
     @objc private func doneAction() {
         if let datePicker = self.popupView.textField.inputView as? CustomDatePickerView {
             let alarmDate: AlarmDate = datePicker.date
-            let ampm: String = alarmDate.am ? "AM" : "PM"
-            let dateString = "Day:\(alarmDate.dayWeek), \(alarmDate.hour):\(alarmDate.min)\(ampm)"
-            self.popupView.textField.text = dateString
+            self.popupView.textField.text = String(describing: alarmDate)
             self.selectedDate = alarmDate
         }
         self.popupView.textField.resignFirstResponder()
@@ -82,7 +80,7 @@ class PopupController: UIViewController {
     }
 }
 
-
+ 
 
 extension UITextField {
     
